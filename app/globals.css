@@ -1,0 +1,473 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   SHREEKUMAR BUILDERS — DESIGN SYSTEM
+   A material-led architectural system: bone, limestone, concrete, stone,
+   graphite, ink, with a single iron-oxide accent.
+   ========================================================================== */
+
+@theme {
+  /* ---- Type families ---- */
+  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-instrument), "Times New Roman", serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* ---- Material palette ---- */
+  --color-bone: #efeae2;
+  --color-limestone: #e3ddd2;
+  --color-concrete: #c6c0b6;
+  --color-stone: #8d877e;
+  --color-graphite: #322f2b;
+  --color-ink: #121110;
+
+  /* ---- Accent: iron oxide / construction marking ---- */
+  --color-oxide: #bd5b1a;
+  --color-oxide-deep: #8d4311;
+  --color-oxide-tint: #e6c6a3;
+
+  /* ---- Semantic surfaces ---- */
+  --color-surface: var(--color-bone);
+  --color-surface-2: var(--color-limestone);
+  --color-surface-3: var(--color-concrete);
+  --color-ink-70: color-mix(in oklab, var(--color-ink) 70%, transparent);
+  --color-ink-45: color-mix(in oklab, var(--color-ink) 45%, transparent);
+  --color-ink-22: color-mix(in oklab, var(--color-ink) 22%, transparent);
+  --color-ink-12: color-mix(in oklab, var(--color-ink) 12%, transparent);
+  --color-ink-06: color-mix(in oklab, var(--color-ink) 6%, transparent);
+  --color-bone-60: color-mix(in oklab, var(--color-bone) 60%, transparent);
+  --color-bone-35: color-mix(in oklab, var(--color-bone) 35%, transparent);
+  --color-bone-14: color-mix(in oklab, var(--color-bone) 14%, transparent);
+  --color-bone-08: color-mix(in oklab, var(--color-bone) 8%, transparent);
+
+  /* ---- Layout ---- */
+  --spacing-gutter: clamp(1.15rem, 3.6vw, 4.5rem);
+  --spacing-section: clamp(5.5rem, 11vw, 11.5rem);
+
+  /* ---- Motion ---- */
+  --ease-arch: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout-arch: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Radii: architectural. Sharp. ---- */
+  --radius-none: 0px;
+  --radius-hair: 1px;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+    background-color: var(--color-bone);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-bone);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 0.94;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--color-ink-12);
+    margin: 0;
+  }
+
+  ::selection {
+    background: var(--color-oxide);
+    color: var(--color-bone);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-oxide);
+    outline-offset: 3px;
+  }
+
+  [data-surface="ink"] :focus-visible {
+    outline-color: var(--color-oxide-tint);
+  }
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+/* Page container: consistent margins + 12 column grid */
+@utility shell {
+  width: 100%;
+  max-width: 108rem;
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+@utility shell-tight {
+  width: 100%;
+  max-width: 88rem;
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+/* Technical metadata label — the connective tissue of the whole layout */
+@utility meta {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@utility meta-sm {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+@utility hairline {
+  background-color: var(--color-ink-12);
+}
+
+/* Fluid display type */
+@utility display {
+  font-size: clamp(3.1rem, 11.4vw, 11.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+
+@utility display-2 {
+  font-size: clamp(2.35rem, 7.4vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+
+@utility heading {
+  font-size: clamp(1.85rem, 4.1vw, 4rem);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+@utility lead {
+  font-size: clamp(1.02rem, 1.42vw, 1.4rem);
+  line-height: 1.5;
+  letter-spacing: -0.011em;
+}
+
+@utility body-copy {
+  font-size: 0.9375rem;
+  line-height: 1.72;
+  letter-spacing: -0.003em;
+}
+
+@utility measure {
+  max-width: 46ch;
+}
+
+@utility measure-wide {
+  max-width: 62ch;
+}
+
+/* Editorial serif accent */
+@utility serif {
+  font-family: var(--font-serif);
+  font-style: normal;
+  letter-spacing: -0.01em;
+}
+
+/* Underline that wipes in from the left */
+@utility rule-link {
+  position: relative;
+  display: inline-block;
+}
+@utility rule-link-after {
+  content: "";
+}
+
+/* Hide native cursor when custom cursor is active */
+@utility cursor-none-fine {
+  cursor: none;
+}
+
+/* Aspect helpers */
+@utility ratio-portrait {
+  aspect-ratio: 3 / 4;
+}
+@utility ratio-landscape {
+  aspect-ratio: 4 / 3;
+}
+@utility ratio-wide {
+  aspect-ratio: 16 / 9;
+}
+@utility ratio-square {
+  aspect-ratio: 1;
+}
+
+/* ==========================================================================
+   Components / patterns
+   --------------------------------------------------------------------------
+   Declared inside @layer components so that any Tailwind utility always wins.
+   Unlayered rules would otherwise override utilities such as `hidden`.
+   ========================================================================== */
+@layer components {
+
+/* --- Surfaces ------------------------------------------------------------ */
+.surface-ink {
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+}
+.surface-stone {
+  background-color: var(--color-limestone);
+}
+
+/* --- Animated link underline ------------------------------------------- */
+.link-rule {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.15em;
+}
+.link-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.55s var(--ease-arch);
+}
+.link-rule:hover::after,
+.link-rule:focus-visible::after,
+.link-rule[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* --- Arrow micro-interaction ------------------------------------------- */
+.arrow-shift {
+  display: inline-block;
+  transition: transform 0.5s var(--ease-arch);
+}
+.group:hover .arrow-shift,
+a:hover .arrow-shift,
+button:hover .arrow-shift {
+  transform: translateX(0.42em);
+}
+
+/* --- Film grain: gives flat colour fields a material surface -----------
+   A static, cached tile rather than an inline SVG turbulence filter, which
+   the browser re-rasterised for every surface on the page. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("/textures/grain.png");
+  background-repeat: repeat;
+  background-size: 96px 96px;
+}
+[data-surface="ink"] .grain::after,
+.surface-ink .grain::after {
+  mix-blend-mode: overlay;
+  opacity: 0.28;
+}
+
+/* --- Custom cursor ------------------------------------------------------ */
+@media (hover: hover) and (pointer: fine) {
+  html[data-custom-cursor="on"],
+  html[data-custom-cursor="on"] * {
+    cursor: none !important;
+  }
+}
+
+/* --- Reveal primitives -------------------------------------------------- */
+.mask-line {
+  display: block;
+  overflow: hidden;
+}
+.mask-line > span,
+.mask-line > em {
+  display: block;
+  will-change: transform;
+}
+
+/* Elements animated by GSAP start visible if JS never runs */
+.js-reveal {
+  will-change: transform, opacity;
+}
+
+/* --- Technical drawing motifs ------------------------------------------ */
+.tick-rule {
+  background-image: repeating-linear-gradient(
+    to right,
+    currentColor 0 1px,
+    transparent 1px 8px
+  );
+}
+
+.crosshair::before,
+.crosshair::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+}
+.crosshair::before {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+}
+.crosshair::after {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+/* --- Textarea / input reset for the contact form ------------------------ */
+.field {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-ink-22);
+  padding: 0.9rem 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: inherit;
+  transition: border-color 0.4s var(--ease-arch);
+}
+.field:focus {
+  outline: none;
+  border-bottom-color: var(--color-oxide);
+}
+.field::placeholder {
+  color: color-mix(in oklab, currentColor 42%, transparent);
+}
+
+/* --- Scrollbar ---------------------------------------------------------- */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-limestone);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-stone);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-graphite);
+  }
+}
+
+/* --- Hero entrance gates ------------------------------------------------ */
+[data-hero-frame],
+[data-hero-scroll] {
+  opacity: 0;
+}
+
+} /* end @layer components */
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain::after {
+    display: none;
+  }
+  [data-hero-frame],
+  [data-hero-scroll] {
+    opacity: 1 !important;
+  }
+}

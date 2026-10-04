@@ -1,0 +1,9 @@
+# Normalise line endings so the same files don't churn between machines.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.webp binary
+*.avif binary
+*.woff binary
+*.woff2 binary
