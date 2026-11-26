@@ -41,7 +41,8 @@ export const site = {
   /** Person to ask for when calling or visiting. */
   contactName: "Babu K",
 
-  url: "https://shreekumarbuilders.com",
+  /** Swap for the real domain once the client has one (feeds canonical, sitemap, OG). */
+  url: "https://shreekumar-builders.vercel.app",
   locale: "en_IN",
 
   seo: {
