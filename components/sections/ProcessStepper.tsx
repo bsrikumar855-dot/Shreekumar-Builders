@@ -15,26 +15,41 @@ export default function ProcessStepper({ heading = true }: { heading?: boolean }
       aria-labelledby="process-title"
     >
       <div className="steps-stage">
-        {/* Header + progress */}
-        <div className="shell absolute inset-x-0 top-[5.4rem] z-20 hidden items-center gap-6 [html.fx_&]:flex">
+        {/* Header: segmented, clickable progress (shown when pinned) */}
+        <div className="steps-head shell absolute inset-x-0 top-[4.9rem] z-20 items-center gap-5">
           <p className="label flex shrink-0 items-center gap-3">
             <span className="bg-ink px-2 py-1 text-cream">05</span>
             Process
           </p>
-          <div className="h-[6px] flex-1 bg-ink/20" aria-hidden>
-            <div className="steps-bar h-full bg-ink" />
+          <div className="flex flex-1 gap-1.5" role="group" aria-label="Process steps">
+            {process.map((st, i) => (
+              <button
+                key={st.index}
+                type="button"
+                data-step-go={i}
+                data-on={i === 0 ? "true" : "false"}
+                data-cursor="Go"
+                aria-label={`Go to step ${st.index}: ${st.title}`}
+                className="group flex-1 py-[1.15rem]"
+              >
+                <span className="block h-[7px] bg-ink/20 transition-[background-color,transform] duration-300 group-hover:-translate-y-0.5 group-hover:bg-ink/60 group-data-[on=true]:bg-ink" />
+              </button>
+            ))}
           </div>
-          <p className="label shrink-0">{n} stages</p>
+          <p className="label hidden shrink-0 sm:block">{n} stages</p>
         </div>
 
-        {heading && (
-          <div className="shell pb-6 pt-24 [html.fx_&]:hidden">
+        {heading ? (
+          <div className="steps-plain shell pb-6 pt-24">
             <h2 id="process-title" className="h2">
               How a project runs
             </h2>
           </div>
+        ) : (
+          <h2 id="process-title" className="sr-only">
+            How a project runs
+          </h2>
         )}
-        {!heading && <h2 id="process-title" className="sr-only">How a project runs</h2>}
 
         {process.map((s, i) => (
           <article key={s.index} className="steps-item" data-active={i === 0 ? "true" : "false"}>

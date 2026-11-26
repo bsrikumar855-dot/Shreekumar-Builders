@@ -50,7 +50,7 @@ export default function Positioning() {
             <li key={f.t} data-parallax-scope>
               <div data-parallax={f.speed}>
                 <div data-rotate={f.rot}>
-                  <div className={`card p-6 lg:p-8 ${f.bg}`}>
+                  <div data-tilt className={`card p-6 lg:p-8 ${f.bg}`}>
                     <p className="font-display text-[clamp(4rem,9vw,8rem)] leading-[0.9]">{f.n}</p>
                     <p className="label mt-4 max-w-[22ch]">{f.t}</p>
                   </div>

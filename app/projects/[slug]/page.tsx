@@ -142,7 +142,7 @@ export default async function ProjectDetailPage({
                       />
                     </div>
                     <figcaption className="label mt-4 flex gap-3">
-                      <span className="text-orange">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="text-rust">{String(i + 1).padStart(2, "0")}</span>
                       {g.caption}
                     </figcaption>
                   </figure>

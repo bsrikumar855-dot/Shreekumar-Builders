@@ -15,6 +15,8 @@ export function ProjectCard({ p, i, tilt = true }: { p: Project; i: number; tilt
   const body = (
     <Link
       href={`/projects/${p.slug}`}
+      data-tilt
+      data-cursor="View"
       className="card group block overflow-hidden bg-paper"
       aria-label={`${projectTitle(p)} — ${p.category}`}
     >

@@ -38,7 +38,7 @@ export default function ServicesPage() {
                 data-parallax="0.08"
               >
                 <div data-reveal={i % 2 ? "right" : "left"}>
-                  <Link href={`/services/${s.slug}`} className="card group block overflow-hidden" aria-label={`${s.title} — view scope`}>
+                  <Link href={`/services/${s.slug}`} data-tilt data-cursor="Open" className="card group block overflow-hidden" aria-label={`${s.title} — view scope`}>
                     <SmartImage
                       src={s.image}
                       alt={`${s.title} — illustration`}
@@ -52,7 +52,7 @@ export default function ServicesPage() {
               </div>
 
               <div className={`col-span-12 lg:col-span-6 ${i % 2 ? "lg:order-1" : ""}`}>
-                <p className="font-display text-[clamp(4rem,9vw,8rem)] leading-none text-orange" data-reveal>
+                <p className="font-display text-[clamp(4rem,9vw,8rem)] leading-none text-rust" data-reveal>
                   {s.index}
                 </p>
                 <h2 className="display-2 mt-2" data-split>

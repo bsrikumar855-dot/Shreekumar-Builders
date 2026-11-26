@@ -22,7 +22,11 @@ export function Wordmark({ light = false }: { light?: boolean }) {
       }`}
     >
       Shreekumar
-      <span className="block text-[0.62rem] font-sans font-extrabold tracking-[0.34em] text-orange">
+      <span
+        className={`block font-sans text-[0.75rem] font-extrabold tracking-[0.28em] ${
+          light ? "text-orange" : "text-rust"
+        }`}
+      >
         Builders
       </span>
     </span>

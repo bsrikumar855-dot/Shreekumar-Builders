@@ -143,6 +143,7 @@ export default function ScrollFX() {
       { small: "(max-width: 767px)", large: "(min-width: 768px)" },
       (ctx) => {
         const amp = ctx.conditions?.small ? 0.5 : 1;
+        const cleanups: Array<() => void> = [];
         const vh = () => window.innerHeight;
         const vw = () => window.innerWidth;
         const scrubTo = (el: Element) =>
@@ -240,16 +241,44 @@ export default function ScrollFX() {
           );
         });
 
-        // Velocity skew on marquee bands
+        // Marquee bands react to scrolling: they skew with speed, run faster
+        // the harder you scroll, and reverse when you scroll back up.
         gsap.utils.toArray<HTMLElement>("[data-skew]").forEach((el) => {
           const setSkew = gsap.quickTo(el, "skewX", { duration: 0.5, ease: "power3.out" });
-          ScrollTrigger.create({
+          const track = el.querySelector<HTMLElement>(".marquee-track");
+          const anim = track?.getAnimations()[0];
+          if (anim) {
+            // Start deep into the loop so reverse playback never hits time 0
+            const dur = Number(anim.effect?.getTiming().duration ?? 38000);
+            anim.currentTime = dur * 50;
+          }
+          let dir = 1;
+          let idle = 0;
+          const setRate = (r: number) => {
+            if (anim) gsap.to(anim, { playbackRate: r, duration: 0.5, ease: "power3.out", overwrite: true });
+          };
+          const st = ScrollTrigger.create({
             trigger: el,
             start: "top bottom",
             end: "bottom top",
-            onUpdate: (self) => setSkew(gsap.utils.clamp(-7, 7, self.getVelocity() / -260)),
+            onUpdate: (self) => {
+              const v = self.getVelocity();
+              setSkew(gsap.utils.clamp(-7, 7, v / -260));
+              if (Math.abs(v) < 30) return;
+              dir = v > 0 ? 1 : -1;
+              setRate(dir * (1 + Math.min(Math.abs(v) / 350, 7)));
+              window.clearTimeout(idle);
+              idle = window.setTimeout(() => {
+                setRate(dir);
+                setSkew(0);
+              }, 160);
+            },
             onLeave: () => setSkew(0),
             onLeaveBack: () => setSkew(0),
+          });
+          cleanups.push(() => {
+            window.clearTimeout(idle);
+            st.kill();
           });
         });
 
@@ -263,21 +292,38 @@ export default function ScrollFX() {
           });
         });
 
-        // Pinned process stepper
+        // Pinned process stepper: scroll drives it, and the segments drive scroll
         gsap.utils.toArray<HTMLElement>(".steps").forEach((box) => {
           const items = Array.from(box.querySelectorAll<HTMLElement>(".steps-item"));
-          const bar = box;
-          const setActive = (idx: number) =>
+          const dots = Array.from(box.querySelectorAll<HTMLElement>("[data-step-go]"));
+          const setActive = (idx: number) => {
             items.forEach((it, i) => it.setAttribute("data-active", String(i === idx)));
+            dots.forEach((d, i) => {
+              d.dataset.on = String(i <= idx);
+              if (i === idx) d.setAttribute("aria-current", "step");
+              else d.removeAttribute("aria-current");
+            });
+          };
           setActive(0);
           ScrollTrigger.create({
             trigger: box,
             start: "top top",
             end: "bottom bottom",
             onUpdate: (self) => {
-              bar.style.setProperty("--p", self.progress.toFixed(4));
+              box.style.setProperty("--p", self.progress.toFixed(4));
               setActive(Math.min(items.length - 1, Math.floor(self.progress * items.length)));
             },
+          });
+          dots.forEach((d, i) => {
+            const go = () => {
+              const range = box.offsetHeight - window.innerHeight;
+              const y = box.getBoundingClientRect().top + window.scrollY + range * ((i + 0.5) / items.length);
+              const l = getLenis();
+              if (l) l.scrollTo(y, { duration: 1.4 });
+              else window.scrollTo({ top: y, behavior: "smooth" });
+            };
+            d.addEventListener("click", go);
+            cleanups.push(() => d.removeEventListener("click", go));
           });
         });
 
@@ -305,6 +351,7 @@ export default function ScrollFX() {
 
         return () => {
           if (onMove) window.removeEventListener("pointermove", onMove);
+          cleanups.forEach((fn) => fn());
         };
       },
     );

@@ -37,7 +37,8 @@ export default function ServicesGrid({ heading = true }: { heading?: boolean }) 
             <li key={s.slug} data-parallax-scope>
               <div className="h-full" data-parallax={COLUMN_SPEED[i % 3]}>
                 <div className="h-full" data-reveal data-delay={String((i % 3) * 120)}>
-                  <Link href={`/services/${s.slug}`} className="card group flex h-full flex-col">
+                  <Link href={`/services/${s.slug}`} data-tilt data-cursor="Open"
+                    className="card group flex h-full flex-col">
                     <div className="relative overflow-hidden border-b-2 border-ink">
                       <SmartImage
                         src={s.image}

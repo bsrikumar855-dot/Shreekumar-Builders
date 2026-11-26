@@ -87,7 +87,7 @@ export default async function ServiceDetailPage({
                 <ul className="mt-5">
                   {service.scope.map((item, i) => (
                     <li key={item} className="flex items-baseline gap-4 border-t-2 border-ink py-3.5">
-                      <span className="font-display w-7 shrink-0 text-xl leading-none text-orange">
+                      <span className="font-display w-7 shrink-0 text-xl leading-none text-rust">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <span>{item}</span>

@@ -2,17 +2,13 @@
   "name": "shreekumar-builders",
   "version": "1.0.0",
   "private": true,
-  "description": "Shreekumar Builders — Building, Electrical, Plumbing & Tiling. Premium construction company website.",
+  "description": "Shreekumar Builders — building, electrical, plumbing and tiling. Construction company website (Next.js, GSAP, Lenis).",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
-    "audit": "node scripts/audit.mjs",
-    "audit:interactions": "node scripts/interactions.mjs",
-    "audit:perf": "node scripts/perf.mjs",
-    "textures": "node scripts/make-grain.mjs"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "gsap": "^3.13.0",
@@ -29,7 +25,6 @@
     "@types/react-dom": "^19.0.2",
     "eslint": "^9.18.0",
     "eslint-config-next": "^15.5.4",
-    "playwright": "^1.63.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2"

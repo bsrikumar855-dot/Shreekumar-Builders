@@ -46,7 +46,7 @@ export default function EnquiryForm({ whatsapp, email, trades }: Props) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="card space-y-6 bg-paper p-6 lg:p-9" noValidate={false}>
+    <form onSubmit={onSubmit} className="card space-y-6 bg-paper p-6 lg:p-9">
       <div className="grid gap-6 sm:grid-cols-2">
         <label className="block">
           <span className="label mb-2 block">Your name</span>

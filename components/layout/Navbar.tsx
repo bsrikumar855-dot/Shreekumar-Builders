@@ -51,6 +51,10 @@ export default function Navbar() {
     getLenis()?.stop();
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    // Keep keyboard / screen-reader focus inside the open menu
+    const behind = Array.from(document.querySelectorAll<HTMLElement>("#main, footer, a[href='#main']"));
+    behind.forEach((n) => n.setAttribute("inert", ""));
+    document.querySelector<HTMLElement>("#menu a")?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpen(false);
@@ -60,6 +64,7 @@ export default function Navbar() {
     window.addEventListener("keydown", onKey);
     return () => {
       getLenis()?.start();
+      behind.forEach((n) => n.removeAttribute("inert"));
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
     };
@@ -70,6 +75,7 @@ export default function Navbar() {
   return (
     <>
       <header
+        onFocusCapture={() => setHidden(false)}
         className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,box-shadow] duration-500 ease-[var(--ease-out)] ${
           hidden && !open ? "-translate-y-full" : "translate-y-0"
         } ${scrolled || open ? "bg-cream/92 shadow-[0_2px_0_var(--color-ink)] backdrop-blur-md" : ""}`}
@@ -86,7 +92,7 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
-                className="u-link label py-2"
+                className="u-link label py-3.5"
               >
                 {item.label}
               </Link>
@@ -134,7 +140,8 @@ export default function Navbar() {
         aria-label="Site menu"
         aria-hidden={!open}
         inert={!open}
-        className={`on-dark fixed inset-0 z-40 flex flex-col justify-between bg-orange px-[var(--spacing-gutter)] pb-10 pt-28 transition-[clip-path] duration-[800ms] ease-[var(--ease-inout)] lg:hidden ${
+        data-lenis-prevent
+        className={`on-dark fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-orange px-[var(--spacing-gutter)] pb-10 pt-28 transition-[clip-path] duration-[800ms] ease-[var(--ease-inout)] lg:hidden ${
           open ? "[clip-path:inset(0_0_0_0)]" : "[clip-path:inset(0_0_100%_0)]"
         }`}
       >
@@ -149,7 +156,7 @@ export default function Navbar() {
                 open ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
               }`}
             >
-              <span className="label text-rust-deep">0{i + 1}</span>
+              <span className="label text-ink">0{i + 1}</span>
               <span className={isActive(item.href) ? "outline-text" : ""}>{item.label}</span>
             </Link>
           ))}

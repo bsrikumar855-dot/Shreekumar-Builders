@@ -26,10 +26,10 @@ export default function Footer() {
 
         <nav aria-label="Footer" className="col-span-6 lg:col-span-2 lg:col-start-7">
           <h2 className="label text-orange">Explore</h2>
-          <ul className="mt-5 space-y-3">
+          <ul className="mt-5 space-y-1.5">
             {navItems.map((n) => (
               <li key={n.href}>
-                <Link href={n.href} className="u-link">
+                <Link href={n.href} className="u-link inline-block py-1">
                   {n.label}
                 </Link>
               </li>
@@ -39,10 +39,10 @@ export default function Footer() {
 
         <div className="col-span-6 lg:col-span-2">
           <h2 className="label text-orange">Trades</h2>
-          <ul className="mt-5 space-y-3">
+          <ul className="mt-5 space-y-1.5">
             {services.map((s) => (
               <li key={s.slug}>
-                <Link href={`/services/${s.slug}`} className="u-link">
+                <Link href={`/services/${s.slug}`} className="u-link inline-block py-1">
                   {s.title}
                 </Link>
               </li>
@@ -52,11 +52,11 @@ export default function Footer() {
 
         <div className="col-span-12 lg:col-span-2">
           <h2 className="label text-orange">Contact</h2>
-          <ul className="mt-5 space-y-3">
+          <ul className="mt-5 space-y-1.5">
             {contacts.map((c) => (
               <li key={c.key}>
                 {c.href ? (
-                  <a href={c.href} className="u-link">
+                  <a href={c.href} className="u-link inline-block py-1">
                     {c.display}
                   </a>
                 ) : (
@@ -74,7 +74,13 @@ export default function Footer() {
           data-parallax-scope
           className="font-display whitespace-nowrap text-center text-[clamp(4.5rem,21.5vw,24rem)] uppercase leading-[0.82] text-orange"
         >
-          <div data-parallax="0.3">Shreekumar</div>
+          <div data-parallax="0.3">
+            {"Shreekumar".split("").map((ch, i) => (
+              <span key={i} className="lift-letter pointer-events-auto">
+                {ch}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 

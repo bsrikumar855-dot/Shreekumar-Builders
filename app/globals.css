@@ -174,7 +174,7 @@
   line-height: 0.98;
 }
 @utility label {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0.16em;
@@ -206,6 +206,7 @@
     text-transform: uppercase;
     white-space: nowrap;
     box-shadow: 5px 5px 0 var(--sh);
+    translate: var(--mx, 0px) var(--my, 0px);
     transition:
       transform 0.35s var(--ease-out),
       box-shadow 0.35s var(--ease-out),
@@ -234,9 +235,9 @@
     color: var(--color-ink);
   }
   .btn-sm {
-    min-height: 2.6rem;
+    min-height: 2.75rem;
     padding: 0.55rem 1.1rem;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     box-shadow: 3px 3px 0 var(--sh);
   }
   .btn .arr {
@@ -286,6 +287,88 @@
   a.card:hover {
     transform: translate(4px, 4px);
     box-shadow: 4px 4px 0 var(--color-ink);
+  }
+
+  /* Tilting cards: GSAP owns transform, so CSS only animates the shadow */
+  .card[data-tilt] {
+    transition: box-shadow 0.5s var(--ease-out);
+    transform-style: preserve-3d;
+  }
+  a.card[data-tilt]:hover {
+    transform: none;
+    box-shadow: 12px 12px 0 var(--color-ink);
+  }
+
+  /* --- Cursor follower ------------------------------------------------ */
+  .cursor-dot {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 300;
+    display: grid;
+    place-items: center;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border: 2px solid var(--color-cream);
+    border-radius: 999px;
+    background: var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-ink);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      width 0.35s var(--ease-out),
+      height 0.35s var(--ease-out),
+      margin 0.35s var(--ease-out),
+      background-color 0.3s,
+      opacity 0.3s;
+  }
+  .cursor-dot[data-show="1"] {
+    opacity: 1;
+  }
+  .cursor-dot[data-state="link"] {
+    width: 44px;
+    height: 44px;
+    margin: -22px 0 0 -22px;
+    background: transparent;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 2px var(--color-cream);
+  }
+  .cursor-dot[data-state="label"] {
+    width: 78px;
+    height: 78px;
+    margin: -39px 0 0 -39px;
+    background: var(--color-orange);
+    border-color: var(--color-ink);
+    box-shadow: none;
+  }
+  .cursor-dot[data-press="1"] {
+    scale: 0.82;
+  }
+  .cursor-dot .label {
+    color: var(--color-ink);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .cursor-dot[data-state="label"] .label {
+    opacity: 1;
+  }
+  @media (hover: none), (pointer: coarse) {
+    .cursor-dot {
+      display: none;
+    }
+  }
+
+  /* Footer wordmark letters lift under the pointer */
+  .lift-letter {
+    display: inline-block;
+    transition:
+      transform 0.5s var(--ease-out),
+      color 0.3s;
+  }
+  .lift-letter:hover {
+    transform: translateY(-0.12em) rotate(-3deg);
+    color: var(--color-cream);
   }
 
   /* --- Form fields ---------------------------------------------------- */
@@ -414,7 +497,6 @@
     transition:
       opacity 0.9s var(--ease-out) var(--d, 0ms),
       transform 1.15s var(--ease-out) var(--d, 0ms);
-    will-change: transform, opacity;
   }
   html.fx [data-reveal="left"] {
     transform: translate3d(-70px, 0, 0);
@@ -444,7 +526,6 @@
     opacity: 1;
     transform: none;
     clip-path: inset(0 0 0 0);
-    will-change: auto;
   }
 
   /* Word-by-word headline masks (words wrapped by ScrollFX) */
@@ -465,47 +546,48 @@
     transform: none;
   }
 
-  /* Elements moved by GSAP get their own layer */
-  [data-parallax],
-  [data-parallax-x],
-  [data-spin],
-  [data-scale],
-  [data-rotate],
-  [data-mouse] {
-    will-change: transform;
-  }
 
-  /* Pinned process stepper: list layout by default, pinned under html.fx */
+  /* Pinned process stepper: plain list by default; pinned + scroll-driven
+     only with scripting, motion allowed and enough viewport height. */
   .steps-item {
     padding-block: 3rem;
   }
-  html.fx .steps {
-    height: calc(var(--n) * 62vh + 100vh);
+  .steps-head {
+    display: none;
   }
-  html.fx .steps-stage {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    height: 100svh;
-    overflow: hidden;
-  }
-  html.fx .steps-item {
-    position: absolute;
-    inset: 0;
-    padding-block: 7.5rem 2.5rem;
-    opacity: 0;
-    visibility: hidden;
-    transform: translate3d(0, 40px, 0);
-    transition:
-      opacity 0.7s var(--ease-out),
-      transform 0.9s var(--ease-out),
-      visibility 0s linear 0.7s;
-  }
-  html.fx .steps-item[data-active="true"] {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    transition-delay: 0s;
+  @media (min-height: 620px) {
+    html.fx .steps {
+      height: calc(var(--n) * 62vh + 100vh);
+    }
+    html.fx .steps-stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      overflow: hidden;
+    }
+    html.fx .steps-head {
+      display: flex;
+    }
+    html.fx .steps-plain {
+      display: none;
+    }
+    html.fx .steps-item {
+      position: absolute;
+      inset: 0;
+      padding-block: 8.5rem 2.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(0, 40px, 0);
+      transition:
+        opacity 0.7s var(--ease-out),
+        transform 0.9s var(--ease-out);
+    }
+    html.fx .steps-item[data-active="true"] {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+    }
   }
   .steps-bar {
     transform-origin: left center;

@@ -3,6 +3,7 @@ import "./globals.css";
 import { fontVariables } from "@/lib/fonts";
 import { site } from "@/lib/data/site";
 import ScrollFX from "@/components/fx/ScrollFX";
+import Interactions from "@/components/fx/Interactions";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -66,11 +67,25 @@ d.classList.add('fx');
 setTimeout(function(){if(!d.hasAttribute('data-fx-ready'))d.classList.remove('fx')},4000);
 }catch(e){}})();`;
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  name: site.name,
+  alternateName: site.tradeName,
+  url: site.url,
+  description: site.seo.description,
+  knowsAbout: ["Building and civil works", "Electrical", "Plumbing", "Tile laying", "Renovation", "Finishing"],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-IN" className={fontVariables} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootFx }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\u003c") }}
+        />
       </head>
       <body className="antialiased">
         <a
@@ -81,6 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
 
         <ScrollFX />
+        <Interactions />
         <Navbar />
 
         <main id="main">{children}</main>
