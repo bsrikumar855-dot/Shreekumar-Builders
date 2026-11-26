@@ -32,3 +32,4 @@ yarn-error.log*
 .vercel
 # raw originals (phone photos / videos) kept locally, not in git
 /source-media/
+.env*

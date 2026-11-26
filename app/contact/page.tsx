@@ -49,6 +49,10 @@ export default function ContactPage() {
             <div className="card on-dark bg-ink p-6 text-cream lg:p-8" data-reveal="right">
               <h2 className="label text-orange">Reach us</h2>
               <ul className="mt-5">
+                <li className="border-t border-cream-15 py-4">
+                  <p className="label text-cream-45">Contact</p>
+                  <p className="font-display mt-1 text-3xl uppercase leading-none">{site.contactName}</p>
+                </li>
                 {contacts.map((c) => (
                   <li key={c.key} className="border-t border-cream-15 py-4">
                     <p className="label text-cream-45">{c.label}</p>
@@ -65,12 +69,16 @@ export default function ContactPage() {
                 ))}
                 <li className="border-t border-cream-15 py-4">
                   <p className="label text-cream-45">{address.label}</p>
-                  <p className="mt-1 text-cream-45">{address.display}</p>
+                  <p className={`mt-1 ${address.isPlaceholder ? "text-cream-45" : "text-cream"}`}>
+                    {address.display}
+                  </p>
                 </li>
               </ul>
-              <div className="mt-4 text-ink">
-                <PendingNote onDark>Replace contact details in lib/data/site.ts</PendingNote>
-              </div>
+              {mail.isPlaceholder && (
+                <div className="mt-4 text-ink">
+                  <PendingNote onDark>Email address still to be added in lib/data/site.ts</PendingNote>
+                </div>
+              )}
             </div>
 
             <div className="card bg-orange p-6 lg:p-8" data-reveal="right" data-delay="120">

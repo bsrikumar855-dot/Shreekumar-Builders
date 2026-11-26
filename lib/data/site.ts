@@ -38,6 +38,9 @@ export const site = {
    */
   founded: null as string | null,
 
+  /** Person to ask for when calling or visiting. */
+  contactName: "Babu K",
+
   url: "https://shreekumarbuilders.com",
   locale: "en_IN",
 
@@ -49,12 +52,12 @@ export const site = {
 
   contact: {
     phone: {
-      value: null,
+      value: "+91 82209 81117",
       placeholder: "[PHONE NUMBER]",
       label: "Call",
     } satisfies ContactEntry,
     whatsapp: {
-      value: null,
+      value: "918220981117",
       placeholder: "[WHATSAPP NUMBER]",
       label: "WhatsApp",
     } satisfies ContactEntry,
@@ -64,12 +67,12 @@ export const site = {
       label: "Email",
     } satisfies ContactEntry,
     location: {
-      value: null,
+      value: "Ondipudur, Coimbatore",
       placeholder: "[LOCATION]",
       label: "Location",
     } satisfies ContactEntry,
     address: {
-      value: null,
+      value: "B4/32 Vallalar Apartment, Vallalar Nagar, Ondipudur, Coimbatore",
       placeholder: "[FULL ADDRESS]",
       label: "Address",
     } satisfies ContactEntry,

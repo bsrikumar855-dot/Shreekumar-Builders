@@ -74,6 +74,18 @@ const jsonLd = {
   alternateName: site.tradeName,
   url: site.url,
   description: site.seo.description,
+  ...(site.contact.phone.value ? { telephone: site.contact.phone.value } : {}),
+  ...(site.contact.address.value
+    ? {
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "B4/32 Vallalar Apartment, Vallalar Nagar, Ondipudur",
+          addressLocality: "Coimbatore",
+          addressRegion: "Tamil Nadu",
+          addressCountry: "IN",
+        },
+      }
+    : {}),
   knowsAbout: ["Electrical installation", "Wiring and distribution", "Lighting", "Plumbing", "Building works", "Tile laying", "Renovation", "Finishing"],
 };
 
