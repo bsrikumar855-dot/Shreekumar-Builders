@@ -17,6 +17,10 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  // The overlay menu is mounted after hydration only: browser extensions that
+  // inject into dialog-like elements can no longer break server/client parity.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const last = useRef(0);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
@@ -133,6 +137,7 @@ export default function Navbar() {
       </header>
 
       {/* Full-screen menu */}
+      {mounted && (
       <div
         id="menu"
         role="dialog"
@@ -168,6 +173,7 @@ export default function Navbar() {
           <p className="label text-ink">Building · Electrical · Plumbing · Tiling</p>
         </div>
       </div>
+      )}
     </>
   );
 }

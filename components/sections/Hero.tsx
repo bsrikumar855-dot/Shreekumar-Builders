@@ -82,8 +82,8 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="relative z-20 grid grid-cols-12 items-end gap-x-6 gap-y-8">
-          <div className="col-span-12 md:col-span-5 lg:col-span-4">
+        <div className="pointer-events-none relative z-20 grid grid-cols-12 items-end gap-x-6 gap-y-8">
+          <div className="pointer-events-auto col-span-12 md:col-span-5 lg:col-span-4">
             <p className="label max-w-[34ch] !leading-[1.7] text-ink" data-reveal data-delay="300">
               Electrical first. Wiring, power and lighting are planned on the same drawing as the
               plumbing, structure and finishes, and installed by one team. Set out first.
@@ -97,7 +97,7 @@ export default function Hero() {
           </div>
 
           <div className="col-span-12 flex items-end justify-between gap-6 md:col-span-7 lg:col-span-8 lg:pl-[22%]">
-            <ul className="hidden flex-wrap gap-2 md:flex" aria-label="Trades">
+            <ul className="pointer-events-auto hidden flex-wrap gap-2 md:flex" aria-label="Trades">
               {TRADES.map((t, i) => (
                 <li
                   key={t}
@@ -109,7 +109,7 @@ export default function Hero() {
                 </li>
               ))}
             </ul>
-            <div className="ml-auto" data-reveal="scale" data-delay="900">
+            <div className="pointer-events-auto ml-auto" data-reveal="scale" data-delay="900">
               <SpinBadge />
             </div>
           </div>

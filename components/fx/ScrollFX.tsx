@@ -78,7 +78,7 @@ export default function ScrollFX() {
 
   /* ---------- Lenis: created once, owned for the life of the app ---------- */
   useEffect(() => {
-    if (!document.documentElement.classList.contains("fx")) return;
+    if (!document.documentElement.hasAttribute("data-fx")) return;
     ensureGsap();
 
     const lenis = new Lenis({
@@ -105,7 +105,7 @@ export default function ScrollFX() {
   /* ---------- Effects: rebuilt for every route ---------- */
   useEffect(() => {
     const root = document.documentElement;
-    if (!root.classList.contains("fx")) return;
+    if (!root.hasAttribute("data-fx")) return;
     ensureGsap();
 
     const lenis = getLenis();

@@ -427,7 +427,7 @@
     70%, 100% { opacity: 1; }
   }
 
-  html.fx .hero-drop {
+  html[data-fx] .hero-drop {
     animation: drop 1.9s var(--ease-out) 0.2s both;
   }
   @keyframes drop {
@@ -488,41 +488,41 @@
   }
 
   /* ======================================================================
-     Scroll FX — only active when the inline boot script adds html.fx
+     Scroll FX — only active when the inline boot script adds html[data-fx]
      (JS present and motion allowed). Without it everything is visible.
      ====================================================================== */
-  html.fx [data-reveal] {
+  html[data-fx] [data-reveal] {
     opacity: 0;
     transform: translate3d(0, 44px, 0);
     transition:
       opacity 0.9s var(--ease-out) var(--d, 0ms),
       transform 1.15s var(--ease-out) var(--d, 0ms);
   }
-  html.fx [data-reveal="left"] {
+  html[data-fx] [data-reveal="left"] {
     transform: translate3d(-70px, 0, 0);
   }
-  html.fx [data-reveal="right"] {
+  html[data-fx] [data-reveal="right"] {
     transform: translate3d(70px, 0, 0);
   }
-  html.fx [data-reveal="fade"] {
+  html[data-fx] [data-reveal="fade"] {
     transform: none;
   }
-  html.fx [data-reveal="scale"] {
+  html[data-fx] [data-reveal="scale"] {
     transform: scale(0.9);
   }
-  html.fx [data-reveal="clip"] {
+  html[data-fx] [data-reveal="clip"] {
     opacity: 1;
     transform: none;
     clip-path: inset(0 0 100% 0);
     transition: clip-path 1.2s var(--ease-inout) var(--d, 0ms);
   }
-  html.fx [data-reveal="wipe"] {
+  html[data-fx] [data-reveal="wipe"] {
     opacity: 1;
     transform: none;
     clip-path: inset(0 100% 0 0);
     transition: clip-path 1.3s var(--ease-inout) var(--d, 0ms);
   }
-  html.fx [data-reveal].is-in {
+  html[data-fx] [data-reveal].is-in {
     opacity: 1;
     transform: none;
     clip-path: inset(0 0 0 0);
@@ -556,23 +556,23 @@
     display: none;
   }
   @media (min-height: 620px) {
-    html.fx .steps {
+    html[data-fx] .steps {
       height: calc(var(--n) * 62vh + 100vh);
     }
-    html.fx .steps-stage {
+    html[data-fx] .steps-stage {
       position: sticky;
       top: 0;
       height: 100vh;
       height: 100svh;
       overflow: hidden;
     }
-    html.fx .steps-head {
+    html[data-fx] .steps-head {
       display: flex;
     }
-    html.fx .steps-plain {
+    html[data-fx] .steps-plain {
       display: none;
     }
-    html.fx .steps-item {
+    html[data-fx] .steps-item {
       position: absolute;
       inset: 0;
       padding-block: 8.5rem 2.5rem;
@@ -583,7 +583,7 @@
         opacity 0.7s var(--ease-out),
         transform 0.9s var(--ease-out);
     }
-    html.fx .steps-item[data-active="true"] {
+    html[data-fx] .steps-item[data-active="true"] {
       opacity: 1;
       pointer-events: auto;
       transform: none;
@@ -596,7 +596,7 @@
 }
 
 /* ==========================================================================
-   Reduced motion — parallax/reveals are never initialised (no html.fx),
+   Reduced motion — parallax/reveals are never initialised (no html[data-fx]),
    remaining CSS animation is neutralised.
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {

@@ -31,7 +31,7 @@ export function ProjectCard({ p, i, tilt = true }: { p: Project; i: number; tilt
         />
         <span className="label absolute left-3 top-3 bg-ink px-3 py-2 text-cream">{p.index}</span>
         {p.placeholder && (
-          <span className="label absolute right-3 top-3 bg-cream px-3 py-2">Details soon</span>
+          <span className="label absolute right-3 top-3 bg-cream px-3 py-2 text-ink">Details soon</span>
         )}
       </div>
       <div className="flex items-end justify-between gap-4 p-5 text-ink">

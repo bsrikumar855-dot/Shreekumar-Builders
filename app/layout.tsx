@@ -57,14 +57,14 @@ export const viewport: Viewport = {
 };
 
 /**
- * Runs before first paint. Turns on the scroll-effect styles (html.fx) only
+ * Runs before first paint. Turns on the scroll-effect styles (html[data-fx]) only
  * when motion is allowed, and switches them off again if the effects script
  * has not come up within 4s — content can never stay hidden.
  */
 const bootFx = `(function(){try{var d=document.documentElement;
 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-d.classList.add('fx');
-setTimeout(function(){if(!d.hasAttribute('data-fx-ready'))d.classList.remove('fx')},4000);
+d.setAttribute('data-fx','');
+setTimeout(function(){if(!d.hasAttribute('data-fx-ready'))d.removeAttribute('data-fx')},4000);
 }catch(e){}})();`;
 
 const jsonLd = {

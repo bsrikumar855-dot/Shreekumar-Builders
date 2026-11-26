@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const brief = [
   ["What to send", "The location, what the space has to do, and any drawings or plans you already have."],
   ["What you get back", "An honest read on what is possible, what it needs and the order it should be built in."],
-  ["Residential & commercial", "Building, civil, electrical, plumbing and tiling work — planned as one scope."],
+  ["Residential & commercial", "Electrical, plumbing, building and tiling work — planned as one scope."],
 ] as const;
 
 export default function ContactPage() {

@@ -38,6 +38,6 @@ Pages stay server-rendered and opt in with data attributes (all handled in
 Interactions: `data-tilt` (3D card tilt), `data-cursor="Label"` (cursor label),
 `.btn` (magnetic). The hero bulb is draggable and switches on and off; the badge spins on hover.
 
-Only transforms are animated. Effects switch on via `html.fx` (set by an inline
+Only transforms are animated. Effects switch on via `html[data-fx]` (set by an inline
 script when motion is allowed) and are never applied under
 `prefers-reduced-motion`; if the script fails the page is fully visible.
