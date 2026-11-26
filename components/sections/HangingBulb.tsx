@@ -3,31 +3,29 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { getLenis } from "@/lib/utils/smooth-scroll";
+import { Rope, ROPE } from "@/lib/utils/rope";
 
 /**
  * The hero's hanging light bulb, on a real flexible cord.
  *
- *   - The cord is a chain of points (Verlet integration, distance
- *     constraints) pinned at the top, with a heavy bulb on the free end. It
- *     bends like a wire and keeps a gentle breeze going so it is never frozen.
- *   - The bulb pivots on a spring at the end of the cord, so it swings loose,
- *     overshoots and wobbles instead of tracking the cord rigidly.
- *   - Click, tap, Enter or Space switches it on and off AND shakes it, with
- *     a filament flicker and a warm glow. Drag it to pull the cord; let go
- *     and it swings back. Fast scrolling blows on it. No hover effects.
+ * All motion comes from `Rope` (lib/utils/rope.ts): a Verlet cord with a
+ * heavy bulb on a spring, stepped on a fixed 120 Hz clock so it behaves the
+ * same on every display, and hard-limited so it can never leave the screen.
+ * That module is tested separately (stability at 24-240 Hz, fuzzed drags,
+ * wind and frame spikes).
+ *
+ *   - Click, tap, Enter or Space switches the light and shakes the bulb.
+ *   - Drag to pull the cord; release and it swings back.
+ *   - Fast scrolling blows on it. There is no hover interaction.
  *
  * Positions are written straight to the DOM every frame (never through React
- * state). With prefers-reduced-motion it stays still and lit.
+ * state). With prefers-reduced-motion the bulb stays still and lit.
  */
-const AX = 360; // anchor x in viewBox units
-const AY = -220; // anchor y (above the visible top, so the cord enters from off-screen)
-const ATTACH = 205; // y of the socket top when hanging at rest
-const N = 22; // cord points
-const SEG = (ATTACH - AY) / (N - 1);
 const VIEW_W = 720;
 const CX = 360;
 const CY = 455;
 const RAYS = [-135, -108, -81, -54, -27, 0, 27, 54, 81, 108, 135];
+const CLICK_SLOP = 8; // px of movement that turns a click into a drag
 
 export default function HangingBulb() {
   const wrap = useRef<HTMLDivElement>(null);
@@ -35,11 +33,11 @@ export default function HangingBulb() {
   const cord = useRef<SVGPathElement>(null);
   const bulb = useRef<SVGGElement>(null);
   const glow = useRef<HTMLDivElement>(null);
+  const ropeRef = useRef<Rope | null>(null);
   const [on, setOn] = useState(false);
   const [flick, setFlick] = useState(0);
   const [touched, setTouched] = useState(false);
   const userToggled = useRef(false);
-  const shakeRef = useRef<(() => void) | null>(null);
 
   const toggle = () => {
     userToggled.current = true;
@@ -69,83 +67,12 @@ export default function HangingBulb() {
       if (!userToggled.current) setOn(true);
     }, 1100);
 
-    /* ---- cord state ---- */
-    const x = new Float32Array(N);
-    const y = new Float32Array(N);
-    const px = new Float32Array(N);
-    const py = new Float32Array(N);
-    const invM = new Float32Array(N).fill(1);
-    invM[0] = 0; // pinned to the ceiling
-    invM[N - 1] = 0.3; // the bulb is heavy
-    for (let i = 0; i < N; i++) {
-      x[i] = px[i] = AX;
-      y[i] = py[i] = AY + i * SEG;
-    }
-    // Entrance: the bulb arrives with a sideways swing
-    px[N - 1] -= 9;
-    px[N - 2] -= 6;
-    px[N - 3] -= 3;
-
-    let bAngle = 0; // bulb angle (deg), on its own spring
-    let bVel = 0;
-    let t = 0;
-    let wind = 0;
-    let dragging = false;
-    let target = { x: AX, y: ATTACH };
-
-    const clamp = (v: number, m: number) => Math.max(-m, Math.min(m, v));
-
-    const toSvg = (cx: number, cy: number) => {
-      const m = root.getScreenCTM();
-      if (!m) return { x: AX, y: ATTACH };
-      const p = new DOMPoint(cx, cy).matrixTransform(m.inverse());
-      return { x: p.x, y: p.y };
-    };
-
-    const SUB = 2;
-    const step = (dt: number) => {
-      const damp = 0.9945;
-      const breeze = Math.sin(t * 0.55) * 120 + Math.sin(t * 1.15 + 1.3) * 45 + wind;
-      for (let i = 1; i < N; i++) {
-        const k = i / (N - 1);
-        const vx = clamp((x[i] - px[i]) * damp, 5);
-        const vy = clamp((y[i] - py[i]) * damp, 5);
-        px[i] = x[i];
-        py[i] = y[i];
-        x[i] += vx + breeze * k * k * dt * dt;
-        y[i] += vy + 1500 * dt * dt;
-      }
-      if (dragging) {
-        // chase the pointer instead of teleporting, so the cord never snaps
-        x[N - 1] += clamp((target.x - x[N - 1]) * 0.3, 8);
-        y[N - 1] += clamp((target.y - y[N - 1]) * 0.3, 8);
-        px[N - 1] = x[N - 1];
-        py[N - 1] = y[N - 1];
-      }
-      for (let it = 0; it < 10; it++) {
-        for (let i = 0; i < N - 1; i++) {
-          const dx = x[i + 1] - x[i];
-          const dy = y[i + 1] - y[i];
-          const d = Math.hypot(dx, dy) || 0.0001;
-          const diff = (d - SEG) / d;
-          const w0 = invM[i];
-          const w1 = dragging && i + 1 === N - 1 ? 0 : invM[i + 1];
-          const tw = w0 + w1;
-          if (tw === 0) continue;
-          x[i] += (dx * diff * w0) / tw;
-          y[i] += (dy * diff * w0) / tw;
-          x[i + 1] -= (dx * diff * w1) / tw;
-          y[i + 1] -= (dy * diff * w1) / tw;
-        }
-      }
-      // Bulb spring: chases the cord's end direction, overshoots, wobbles
-      const tipAngle = (-Math.atan2(x[N - 1] - x[N - 2], y[N - 1] - y[N - 2]) * 180) / Math.PI;
-      bVel += (110 * (tipAngle - bAngle) - 3.4 * bVel) * dt;
-      bAngle += bVel * dt;
-      bAngle = clamp(bAngle, 75);
-    };
+    const rope = new Rope(true);
+    ropeRef.current = rope;
+    const N = rope.n;
 
     const render = () => {
+      const { x, y } = rope;
       let d = `M${x[0].toFixed(1)} ${y[0].toFixed(1)}`;
       for (let i = 1; i < N - 1; i++) {
         const mx = (x[i] + x[i + 1]) / 2;
@@ -156,20 +83,16 @@ export default function HangingBulb() {
       path.setAttribute("d", d);
       el.setAttribute(
         "transform",
-        `translate(${x[N - 1].toFixed(1)} ${y[N - 1].toFixed(1)}) rotate(${bAngle.toFixed(2)}) translate(${-AX} ${-ATTACH})`,
+        `translate(${x[N - 1].toFixed(1)} ${y[N - 1].toFixed(1)}) rotate(${rope.angle.toFixed(2)}) translate(${-ROPE.AX} ${-ROPE.ATTACH})`,
       );
       if (glow.current) {
         const s = box.getBoundingClientRect().width / VIEW_W;
-        glow.current.style.translate = `${((x[N - 1] - AX) * s).toFixed(1)}px ${((y[N - 1] - ATTACH) * s).toFixed(1)}px`;
+        glow.current.style.translate = `${((x[N - 1] - ROPE.AX) * s).toFixed(1)}px ${((y[N - 1] - ROPE.ATTACH) * s).toFixed(1)}px`;
       }
     };
 
     const tick = (_: number, deltaMs: number) => {
-      const frame = Math.min(deltaMs, 40) / 1000;
-      t += frame;
-      wind *= Math.exp(-2.2 * frame);
-      const dt = frame / SUB;
-      for (let s = 0; s < SUB; s++) step(dt);
+      rope.advance(deltaMs / 1000);
       render();
     };
     gsap.ticker.add(tick);
@@ -177,87 +100,85 @@ export default function HangingBulb() {
     // Wind from fast scrolling
     const lenis = getLenis();
     const onScroll = (l: { velocity: number }) => {
-      if (!dragging) wind = clamp(l.velocity, 50) * 9;
+      if (!rope.isDragging) rope.blow(Math.max(-50, Math.min(50, l.velocity)) * 9);
     };
     lenis?.on("scroll", onScroll as never);
 
-    /* ---- drag the bulb ---- */
+    const toSvg = (cx: number, cy: number) => {
+      const m = root.getScreenCTM();
+      if (!m) return { x: ROPE.AX, y: ROPE.ATTACH };
+      const p = new DOMPoint(cx, cy).matrixTransform(m.inverse());
+      return { x: p.x, y: p.y };
+    };
+
+    /* ---- pointer: press = click, press + move = drag ---- */
+    let pressed = false;
     let startX = 0;
     let startY = 0;
-    let startT = 0;
     let moved = 0;
-    const maxReach = (N - 1) * SEG * 0.995;
-    const setTarget = (e: PointerEvent) => {
-      const p = toSvg(e.clientX, e.clientY);
-      // keep the grab point on the cord's reach so it cannot be pulled apart
-      const dx = p.x - AX;
-      const dy = Math.max(p.y - AY, 40);
-      const d = Math.hypot(dx, dy);
-      const k = d > maxReach ? maxReach / d : 1;
-      target = { x: AX + dx * k, y: AY + dy * k };
-    };
     const down = (e: PointerEvent) => {
+      if (e.button !== 0 && e.pointerType === "mouse") return;
       e.preventDefault();
-      dragging = true;
-      document.body.style.userSelect = "none";
-      (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
-      startT = performance.now();
+      pressed = true;
+      moved = 0;
       startX = e.clientX;
       startY = e.clientY;
-      moved = 0;
-      target = { x: x[N - 1], y: y[N - 1] };
-      document.documentElement.style.cursor = "grabbing";
+      (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+      document.body.style.userSelect = "none";
     };
     const move = (e: PointerEvent) => {
-      if (!dragging) return;
+      if (!pressed) return;
       moved = Math.max(moved, Math.hypot(e.clientX - startX, e.clientY - startY));
-      // while pressing but not yet moving, hold position so a click stays a click
-      if (moved > 6) setTarget(e);
-      else target = { x: x[N - 1], y: y[N - 1] };
-    };
-    // A click shakes the bulb: a sideways kick up the cord plus a wobble
-    let shakeDir = 1;
-    const shake = () => {
-      shakeDir *= -1;
-      for (let i = N - 1; i > 3; i--) {
-        const k = (i - 3) / (N - 4);
-        px[i] -= shakeDir * 2.1 * k;
-      }
-      bVel += shakeDir * 260;
-    };
-    const up = () => {
-      if (!dragging) return;
-      dragging = false;
-      document.documentElement.style.cursor = "";
-      document.body.style.userSelect = "";
-      if (moved < 6 && performance.now() - startT < 400) {
-        toggle();
-        shake();
+      if (moved <= CLICK_SLOP) return;
+      const p = toSvg(e.clientX, e.clientY);
+      if (!rope.isDragging) {
+        rope.grab(p.x, p.y);
+        document.documentElement.style.cursor = "grabbing";
       } else {
-        setTouched(true);
-        // hand the bulb back gently: cap whatever speed the drag built up
-        for (let i = 1; i < N; i++) {
-          px[i] = x[i] - clamp(x[i] - px[i], 5);
-          py[i] = y[i] - clamp(y[i] - py[i], 5);
-        }
-        bVel = clamp(bVel, 180);
+        rope.moveTo(p.x, p.y);
       }
     };
-    shakeRef.current = shake;
+    const end = (cancelled: boolean) => {
+      if (!pressed) return;
+      pressed = false;
+      document.body.style.userSelect = "";
+      document.documentElement.style.cursor = "";
+      if (rope.isDragging) {
+        rope.release();
+        setTouched(true);
+      } else if (!cancelled && moved <= CLICK_SLOP) {
+        toggle();
+        rope.kick();
+      }
+    };
+    const up = () => end(false);
+    const cancel = () => end(true);
+    const key = (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle();
+        rope.kick();
+      }
+    };
+
     el.addEventListener("pointerdown", down);
     el.addEventListener("pointermove", move);
     el.addEventListener("pointerup", up);
-    el.addEventListener("pointercancel", up);
+    el.addEventListener("pointercancel", cancel);
+    el.addEventListener("lostpointercapture", cancel);
+    el.addEventListener("keydown", key);
 
     return () => {
       window.clearTimeout(auto);
-      shakeRef.current = null;
+      ropeRef.current = null;
       gsap.ticker.remove(tick);
       lenis?.off("scroll", onScroll as never);
       el.removeEventListener("pointerdown", down);
       el.removeEventListener("pointermove", move);
       el.removeEventListener("pointerup", up);
-      el.removeEventListener("pointercancel", up);
+      el.removeEventListener("pointercancel", cancel);
+      el.removeEventListener("lostpointercapture", cancel);
+      el.removeEventListener("keydown", key);
       document.documentElement.style.cursor = "";
       document.body.style.userSelect = "";
     };
@@ -298,7 +219,7 @@ export default function HangingBulb() {
         {/* flexible cord (path is rewritten every frame) */}
         <path
           ref={cord}
-          d={`M${AX} ${AY} L${AX} ${ATTACH}`}
+          d={`M${ROPE.AX} ${ROPE.AY} L${ROPE.AX} ${ROPE.ATTACH}`}
           fill="none"
           stroke="var(--color-ink)"
           strokeWidth="7"
@@ -309,22 +230,15 @@ export default function HangingBulb() {
         {/* the bulb: positioned and rotated imperatively */}
         <g
           ref={bulb}
-          data-cursor="Switch"
           role="button"
           tabIndex={0}
           aria-pressed={on}
-          aria-label="Light bulb. Press to switch it on or off. Drag to swing it."
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              toggle();
-              shakeRef.current?.();
-            }
-          }}
-          style={{ pointerEvents: "auto", cursor: "grab", touchAction: "pan-y", userSelect: "none", outline: "none" }}
+          aria-label="Light bulb. Press to switch it on or off and shake it. Drag to pull it."
+          style={{ pointerEvents: "auto", cursor: "pointer", touchAction: "pan-y", userSelect: "none" }}
+          className="outline-none focus-visible:[&>rect]:stroke-ink"
         >
           {/* generous invisible hit area */}
-          <rect x="180" y="190" width="360" height="400" fill="transparent" />
+          <rect x="180" y="190" width="360" height="400" fill="transparent" strokeWidth="0" />
 
           {/* rays */}
           <g
