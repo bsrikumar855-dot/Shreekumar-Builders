@@ -16,6 +16,13 @@ time for the filename:
 
 Nothing is broken by a missing file, and nothing is fabricated.
 
+## Currently supplied
+
+The services, About, the four project covers and all twelve gallery frames use real
+site photographs (cropped, tone-corrected and exported as WebP). Not yet supplied:
+`hero-construction.webp` (the hero uses the interactive bulb instead) and
+`process-01…07.webp` (the process stepper still uses illustrations).
+
 ## Required filenames
 
 | Slot | Filename | Subject |

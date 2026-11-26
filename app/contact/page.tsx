@@ -69,7 +69,7 @@ export default function ContactPage() {
                 </li>
               </ul>
               <div className="mt-4 text-ink">
-                <PendingNote>Replace contact details in lib/data/site.ts</PendingNote>
+                <PendingNote onDark>Replace contact details in lib/data/site.ts</PendingNote>
               </div>
             </div>
 

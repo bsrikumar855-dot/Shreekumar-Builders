@@ -28,8 +28,8 @@ export default function ProjectsPage() {
         <div className="shell">
           {anyPlaceholder && (
             <div className="mb-12 text-ink" data-reveal>
-              <PendingNote>
-                Project names, locations and photographs are being added — fill lib/data/projects.ts
+              <PendingNote onDark>
+                Project names, locations and details are being added — fill lib/data/projects.ts
               </PendingNote>
             </div>
           )}

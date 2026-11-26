@@ -106,9 +106,19 @@ export function SectionLabel({
 }
 
 /** Honest placeholder tag for content the client still has to supply. */
-export function PendingNote({ children }: { children: ReactNode }) {
+export function PendingNote({
+  children,
+  onDark = false,
+}: {
+  children: ReactNode;
+  onDark?: boolean;
+}) {
   return (
-    <p className="label inline-block border-2 border-dashed border-rust px-3 py-2 text-rust">
+    <p
+      className={`label inline-block border-2 border-dashed px-3 py-2 ${
+        onDark ? "border-cream text-cream" : "border-rust text-rust"
+      }`}
+    >
       {children}
     </p>
   );

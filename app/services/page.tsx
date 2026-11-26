@@ -41,7 +41,7 @@ export default function ServicesPage() {
                   <Link href={`/services/${s.slug}`} data-tilt data-cursor="Open" className="card group block overflow-hidden" aria-label={`${s.title} — view scope`}>
                     <SmartImage
                       src={s.image}
-                      alt={`${s.title} — illustration`}
+                      alt={`${s.title} work by Shreekumar Builders`}
                       plate={s.plate}
                       tone={TONES[i]}
                       parallax={-0.12}

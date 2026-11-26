@@ -42,7 +42,7 @@ export default function ServicesGrid({ heading = true }: { heading?: boolean }) 
                     <div className="relative overflow-hidden border-b-2 border-ink">
                       <SmartImage
                         src={s.image}
-                        alt={`${s.title} — illustration`}
+                        alt={`${s.title} work by Shreekumar Builders`}
                         plate={s.plate}
                         tone={TONES[i]}
                         parallax={-0.1}

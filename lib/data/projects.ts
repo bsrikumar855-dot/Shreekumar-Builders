@@ -8,7 +8,9 @@ import type { Service } from "./services";
  *
  * No project names, clients, locations or years were supplied for this build,
  * so none have been invented. Every entry is flagged `placeholder: true` and
- * renders as a clearly marked, designed placeholder card.
+ * renders as a clearly marked placeholder card. The photographs and gallery
+ * captions are real site photos; which job each belongs to still needs
+ * confirming.
  *
  * To publish real work:
  *   1. Replace each object's fields with verified project data.
@@ -57,9 +59,9 @@ export const projects: Project[] = [
     image: "project-01.webp",
     plate: "frame",
     gallery: [
-      { src: "project-01-01.webp", caption: "[Structure / in progress]", plate: "frame" },
-      { src: "project-01-02.webp", caption: "[Services rough-in]", plate: "circuit" },
-      { src: "project-01-03.webp", caption: "[Finishing stage]", plate: "tile" },
+      { src: "project-01-01.webp", caption: "Drain sleeve set in blockwork", plate: "frame" },
+      { src: "project-01-02.webp", caption: "Supply and drain runs at a wall corner", plate: "circuit" },
+      { src: "project-01-03.webp", caption: "Drain pipe laid along the building edge", plate: "tile" },
     ],
     facts: [
       { key: "Type", value: "[Project type]" },
@@ -85,9 +87,9 @@ export const projects: Project[] = [
     image: "project-02.webp",
     plate: "section",
     gallery: [
-      { src: "project-02-01.webp", caption: "[Before / condition survey]", plate: "section" },
-      { src: "project-02-02.webp", caption: "[Strip-out]", plate: "masonry" },
-      { src: "project-02-03.webp", caption: "[Completed]", plate: "detail" },
+      { src: "project-02-01.webp", caption: "Plaster stripped back to masonry", plate: "section" },
+      { src: "project-02-02.webp", caption: "Wall chased for new pipework", plate: "masonry" },
+      { src: "project-02-03.webp", caption: "Vertical supply lines on exposed wall", plate: "detail" },
     ],
     facts: [
       { key: "Type", value: "[Project type]" },
@@ -113,9 +115,9 @@ export const projects: Project[] = [
     image: "project-03.webp",
     plate: "circuit",
     gallery: [
-      { src: "project-03-01.webp", caption: "[Containment routing]", plate: "circuit" },
-      { src: "project-03-02.webp", caption: "[First fix]", plate: "pipe" },
-      { src: "project-03-03.webp", caption: "[Fittings installed]", plate: "detail" },
+      { src: "project-03-01.webp", caption: "Supply and drain pipes below floor level", plate: "circuit" },
+      { src: "project-03-02.webp", caption: "Pipe stub-out ready for the fixture", plate: "pipe" },
+      { src: "project-03-03.webp", caption: "Drain stub-out in blockwork", plate: "detail" },
     ],
     facts: [
       { key: "Type", value: "[Project type]" },
@@ -139,9 +141,9 @@ export const projects: Project[] = [
     image: "project-04.webp",
     plate: "tile",
     gallery: [
-      { src: "project-04-01.webp", caption: "[Set-out]", plate: "tile" },
-      { src: "project-04-02.webp", caption: "[Laying]", plate: "detail" },
-      { src: "project-04-03.webp", caption: "[Completed surface]", plate: "section" },
+      { src: "project-04-01.webp", caption: "Floor tiles laid", plate: "tile" },
+      { src: "project-04-02.webp", caption: "Tiled wall with services chased", plate: "detail" },
+      { src: "project-04-03.webp", caption: "Wall tiles cut back for pipework", plate: "section" },
     ],
     facts: [
       { key: "Type", value: "[Project type]" },
