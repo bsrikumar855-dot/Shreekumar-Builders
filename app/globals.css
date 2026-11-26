@@ -412,19 +412,19 @@
     }
   }
 
-  /* --- Crane sway ----------------------------------------------------- */
-  .sway {
-    transform-origin: 50% 0;
-    animation: sway 6.5s var(--ease-inout) infinite;
+  /* --- Bulb filament flicker on switch-on ----------------------------- */
+  .bulb-flicker {
+    animation: flicker 0.9s linear both;
   }
-  @keyframes sway {
-    0%,
-    100% {
-      transform: rotate(-1.6deg);
-    }
-    50% {
-      transform: rotate(1.6deg);
-    }
+  @keyframes flicker {
+    0% { opacity: 0; }
+    8% { opacity: 0.9; }
+    14% { opacity: 0.1; }
+    24% { opacity: 1; }
+    32% { opacity: 0.25; }
+    46% { opacity: 0.95; }
+    54% { opacity: 0.5; }
+    70%, 100% { opacity: 1; }
   }
 
   html.fx .hero-drop {

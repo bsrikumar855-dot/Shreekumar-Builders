@@ -33,14 +33,13 @@ export default function Positioning() {
 
         <div className="mt-8 grid grid-cols-12 items-end gap-x-6 gap-y-10">
           <h2 id="position-title" className="display-2 col-span-12 lg:col-span-8" data-split>
-            We don&apos;t just build structures. We build the{" "}
+            We don&apos;t just wire buildings. We power the{" "}
             <span className="inline-block bg-orange px-[0.12em] leading-[0.92]">systems</span> that make them work.
           </h2>
           <div className="col-span-12 lg:col-span-4" data-reveal data-delay="200">
             <p className="lead">
-              A building is not only walls and finishes. It is structure, electrical, plumbing and
-              surface — planned together, so nothing collides and nothing is chased into a finished
-              wall.
+              Power, lighting, water and structure all have to meet in the same walls. Planned
+              together, nothing collides, and nothing is chased into a finished wall.
             </p>
           </div>
         </div>

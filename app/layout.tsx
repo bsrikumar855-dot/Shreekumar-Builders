@@ -18,13 +18,13 @@ export const metadata: Metadata = {
   authors: [{ name: site.name }],
   creator: site.name,
   keywords: [
-    "building contractor",
-    "civil works",
+    "electrician",
     "electrical works",
+    "wiring",
     "plumbing works",
+    "building contractor",
     "tile laying",
     "renovation",
-    "construction",
     "Shreekumar Builders",
   ],
   alternates: { canonical: "/" },
@@ -69,12 +69,12 @@ setTimeout(function(){if(!d.hasAttribute('data-fx-ready'))d.classList.remove('fx
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
+  "@type": ["Electrician", "HomeAndConstructionBusiness"],
   name: site.name,
   alternateName: site.tradeName,
   url: site.url,
   description: site.seo.description,
-  knowsAbout: ["Building and civil works", "Electrical", "Plumbing", "Tile laying", "Renovation", "Finishing"],
+  knowsAbout: ["Electrical installation", "Wiring and distribution", "Lighting", "Plumbing", "Building works", "Tile laying", "Renovation", "Finishing"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

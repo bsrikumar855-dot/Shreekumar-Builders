@@ -1,7 +1,7 @@
 # Shreekumar Builders
 
-Marketing site for Shreekumar Builders (building, electrical, plumbing, tiling,
-renovation, finishing). Next.js 15 (App Router) · Tailwind CSS v4 · GSAP + Lenis.
+Marketing site for Shreekumar Builders: electrical-led, with plumbing, building,
+tiling, renovation and finishing. Next.js 15 (App Router) · Tailwind CSS v4 · GSAP + Lenis.
 
 ```bash
 npm install
@@ -36,7 +36,7 @@ Pages stay server-rendered and opt in with data attributes (all handled in
 `data-mouse` · `data-skew` · `data-progress` · `data-reveal` · `data-split` · `data-delay`
 
 Interactions: `data-tilt` (3D card tilt), `data-cursor="Label"` (cursor label),
-`.btn` (magnetic). The crane and badge in the hero are draggable / hoverable.
+`.btn` (magnetic). The hero bulb is draggable and switches on and off; the badge spins on hover.
 
 Only transforms are animated. Effects switch on via `html.fx` (set by an inline
 script when motion is allowed) and are never applied under

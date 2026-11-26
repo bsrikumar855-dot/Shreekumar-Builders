@@ -26,28 +26,6 @@ export type Service = {
 export const services: Service[] = [
   {
     index: "01",
-    title: "Building",
-    slug: "building",
-    summary:
-      "Structural and general building work — from setting-out and foundations to load-bearing masonry and structural concrete.",
-    body: [
-      "A building is only as good as what sits under the finish. We start at set-out: grid lines, levels and dimensions agreed before anything is cut, so that every trade downstream inherits a correct datum.",
-      "Masonry is laid to line and level with joints filled and faced consistently. Structural concrete is placed with formwork checked for line, cover and support before the pour, then cured and struck on schedule.",
-      "Because electrical and plumbing are planned alongside the structure rather than after it, conduits, sleeves and service routes are resolved before walls are closed.",
-    ],
-    scope: [
-      "Setting-out and dimensional control",
-      "Foundations and structural work",
-      "Load-bearing masonry",
-      "Structural RCC — formwork, reinforcement, pouring",
-      "Slabs, lintels and structural openings",
-      "Wall building and blockwork",
-    ],
-    image: "building-construction.webp",
-    plate: "masonry",
-  },
-  {
-    index: "02",
     title: "Electrical",
     slug: "electrical",
     summary:
@@ -69,7 +47,7 @@ export const services: Service[] = [
     plate: "circuit",
   },
   {
-    index: "03",
+    index: "02",
     title: "Plumbing",
     slug: "plumbing",
     summary:
@@ -89,6 +67,28 @@ export const services: Service[] = [
     ],
     image: "plumbing-work.webp",
     plate: "pipe",
+  },
+  {
+    index: "03",
+    title: "Building",
+    slug: "building",
+    summary:
+      "Structural and general building work — from setting-out and foundations to load-bearing masonry and structural concrete.",
+    body: [
+      "A building is only as good as what sits under the finish. We start at set-out: grid lines, levels and dimensions agreed before anything is cut, so that every trade downstream inherits a correct datum.",
+      "Masonry is laid to line and level with joints filled and faced consistently. Structural concrete is placed with formwork checked for line, cover and support before the pour, then cured and struck on schedule.",
+      "Because electrical and plumbing are planned alongside the structure rather than after it, conduits, sleeves and service routes are resolved before walls are closed.",
+    ],
+    scope: [
+      "Setting-out and dimensional control",
+      "Foundations and structural work",
+      "Load-bearing masonry",
+      "Structural RCC — formwork, reinforcement, pouring",
+      "Slabs, lintels and structural openings",
+      "Wall building and blockwork",
+    ],
+    image: "building-construction.webp",
+    plate: "masonry",
   },
   {
     index: "04",

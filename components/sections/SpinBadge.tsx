@@ -21,7 +21,7 @@ export default function SpinBadge() {
       type="button"
       data-spin="160"
       data-cursor="Spin"
-      aria-label="Six trades, one team, one scope. Decorative badge: press to reverse its spin."
+      aria-label="Electrical first, six trades, one team. Decorative badge: press to reverse its spin."
       className="block h-28 w-28 rounded-full md:h-36 md:w-36"
       onPointerEnter={() => rate(9)}
       onPointerLeave={() => rate(1)}
@@ -39,7 +39,7 @@ export default function SpinBadge() {
         <circle cx="60" cy="60" r="58" fill="var(--color-ink)" />
         <text fill="var(--color-cream)" style={{ fontSize: 10.5, fontWeight: 800, textTransform: "uppercase" }}>
           <textPath href="#badge-circle" textLength="283" lengthAdjust="spacing">
-            Six trades · One team · One scope ·
+            Electrical first · Six trades ·
           </textPath>
         </text>
         <path d="M44 38h32v10H54v4h22v22H44V64h22v-4H44z" fill="var(--color-orange)" transform="translate(0 4)" />

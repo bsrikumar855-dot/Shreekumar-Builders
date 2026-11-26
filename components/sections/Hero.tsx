@@ -1,15 +1,16 @@
 import { Blob, Cta } from "@/components/ui/Bits";
-import Crane from "@/components/sections/Crane";
+import HangingBulb from "@/components/sections/HangingBulb";
+import { services } from "@/lib/data/services";
 import SpinBadge from "@/components/sections/SpinBadge";
 
 /**
  * Hero — layered for depth.
  *   back   orange / rust blobs + grid  (drift slower than the page)
  *   mid    black headline              (z-10)
- *   front  crane + hanging module      (z-20, rises and swings)
- *   top    outline copy of headline    (z-30) so the module reads *inside* the type
+ *   front  hanging bulb               (z-20, drops in, swings, switches on)
+ *   top    outline copy of headline    (z-30) so the bulb reads *inside* the type
  */
-const TRADES = ["Building", "Electrical", "Plumbing", "Tile Laying", "Renovation", "Finishing"];
+const TRADES = services.map((s) => s.title);
 
 export default function Hero() {
   return (
@@ -46,13 +47,13 @@ export default function Hero() {
         <div>
           <p className="label mb-5 flex items-center gap-3" data-reveal data-delay="100">
             <span className="bg-ink px-2 py-1 text-cream">01</span>
-            Building · Civil · Electrical · Plumbing · Tiling
+            Electrical · Plumbing · Building · Tiling
           </p>
 
           <div className="relative">
             {/* MID layer: solid headline */}
             <h1 className="display relative z-10 text-ink" data-reveal="wipe" data-delay="150">
-              Built with
+              Wired with
               <br />
               Precision<span className="text-orange">.</span>
             </h1>
@@ -64,7 +65,7 @@ export default function Hero() {
               data-delay="150"
               className="display outline-text pointer-events-none absolute inset-0 z-30 hidden md:block"
             >
-              Built with
+              Wired with
               <br />
               Precision.
             </div>
@@ -74,18 +75,18 @@ export default function Hero() {
         {/* FRONT layer: crane */}
         <div
           data-parallax="0.22"
-          className="relative z-20 mx-auto w-[min(86vw,28rem)] md:absolute md:-top-6 md:right-[1%] md:mx-0 md:w-[min(58vw,58rem)]"
+          className="relative z-20 mx-auto w-[min(86vw,28rem)] md:absolute md:-top-6 md:right-[6%] md:mx-0 md:w-[min(56vw,56rem)]"
         >
           <div className="hero-drop">
-            <Crane />
+            <HangingBulb />
           </div>
         </div>
 
         <div className="relative z-20 grid grid-cols-12 items-end gap-x-6 gap-y-8">
           <div className="col-span-12 md:col-span-5 lg:col-span-4">
             <p className="label max-w-[34ch] !leading-[1.7] text-ink" data-reveal data-delay="300">
-              Structure, services and finishes are planned on the same drawing and executed by the
-              same team. Set out first. Built to dimension.
+              Electrical first. Wiring, power and lighting are planned on the same drawing as the
+              plumbing, structure and finishes, and installed by one team. Set out first.
             </p>
             <div className="mt-8 flex flex-wrap gap-4" data-reveal data-delay="450">
               <Cta href="/contact">Start a project</Cta>

@@ -6,8 +6,9 @@ import ProcessStepper from "@/components/sections/ProcessStepper";
 import WhyUs from "@/components/sections/WhyUs";
 import CtaBand from "@/components/sections/CtaBand";
 import { Marquee } from "@/components/ui/Bits";
+import { services } from "@/lib/data/services";
 
-const TRADES = ["Building", "Electrical", "Plumbing", "Tile Laying", "Renovation", "Finishing"];
+const TRADES = services.map((s) => s.title);
 
 /**
  * Home — proof-first, single primary CTA (see research notes in the repo

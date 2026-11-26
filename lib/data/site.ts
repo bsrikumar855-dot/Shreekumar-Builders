@@ -30,7 +30,7 @@ export type ContactEntry = {
 export const site = {
   name: "Shreekumar Builders",
   tradeName: "Shreekumar Electrical & Plumbing Works",
-  descriptor: "Building · Civil · Electrical · Plumbing · Tiling",
+  descriptor: "Electrical · Plumbing · Building · Tiling",
 
   /**
    * Founding year is unknown — deliberately not invented.
@@ -42,9 +42,9 @@ export const site = {
   locale: "en_IN",
 
   seo: {
-    title: "Shreekumar Builders | Building, Electrical, Plumbing & Tiling",
+    title: "Shreekumar Builders | Electrical, Plumbing, Building & Tiling",
     description:
-      "Shreekumar Builders — building and civil works, electrical, plumbing and tile laying delivered as one coordinated scope. Precision in execution, discipline in the details.",
+      "Shreekumar Builders — electrical, plumbing, building and tile laying delivered as one coordinated scope. Wiring and power are planned with the structure and set out before anything is built.",
   },
 
   contact: {

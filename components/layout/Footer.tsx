@@ -16,7 +16,7 @@ export default function Footer() {
             <Wordmark light />
           </Link>
           <p className="mt-6 max-w-[40ch] text-cream-70">
-            {site.tradeName}. Building, electrical, plumbing and tiling — planned on the same
+            {site.tradeName}. Electrical, plumbing, building and tiling — planned on the same
             drawing and delivered by one team.
           </p>
           <Link href="/contact" className="btn btn-orange mt-8">

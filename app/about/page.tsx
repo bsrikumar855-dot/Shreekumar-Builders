@@ -50,8 +50,8 @@ export default function AboutPage() {
       <PageHeader
         index="06"
         label="About"
-        lines={["Building is a craft.", "Execution is a discipline"]}
-        lead={`${site.name} — ${site.tradeName} — works across building and civil, electrical, plumbing and tiling for residential and commercial projects.`}
+        lines={["Wiring is a craft.", "Execution is a discipline"]}
+        lead={`${site.name} — ${site.tradeName} — works across electrical, plumbing, building and tiling for residential and commercial projects.`}
         meta={[
           { k: "Trades", v: "06" },
           { k: "Works", v: "Residential · Commercial" },

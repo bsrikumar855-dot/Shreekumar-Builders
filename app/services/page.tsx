@@ -8,7 +8,7 @@ import { services } from "@/lib/data/services";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Building, electrical, plumbing, tile laying, renovation and finishing — delivered by Shreekumar Builders as one coordinated scope.",
+    "Electrical, plumbing, building, tile laying, renovation and finishing — delivered by Shreekumar Builders as one coordinated scope.",
   alternates: { canonical: "/services" },
 };
 
@@ -21,7 +21,7 @@ export default function ServicesPage() {
         index="03"
         label="Services"
         lines={["Six trades.", "One scope"]}
-        lead="Structure, services and finishes are planned on the same drawing and delivered by one team — so nothing is chased into a finished wall."
+        lead="Electrical first, planned on the same drawing as the plumbing, structure and finishes and delivered by one team, so nothing is chased into a finished wall."
         meta={[{ k: "Trades", v: "06" }]}
       />
 

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Shreekumar Builders — Building, Electrical, Plumbing & Tiling";
+export const alt = "Shreekumar Builders — Electrical, Plumbing, Building & Tiling";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -40,11 +40,11 @@ export default function OpengraphImage() {
           </div>
         </div>
         <div style={{ fontSize: 190, lineHeight: 0.9, textTransform: "uppercase", display: "flex", flexDirection: "column" }}>
-          <span>Built with</span>
+          <span>Wired with</span>
           <span style={{ color: "#fdf5e8" }}>Precision.</span>
         </div>
         <div style={{ fontSize: 30, letterSpacing: 4, textTransform: "uppercase", display: "flex" }}>
-          Building · Electrical · Plumbing · Tiling
+          Electrical · Plumbing · Building · Tiling
         </div>
       </div>
     ),
