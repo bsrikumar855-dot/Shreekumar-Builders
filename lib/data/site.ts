@@ -131,7 +131,6 @@ export function hasRealContact(): boolean {
 }
 
 export const navItems = [
-  { label: "Index", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Projects", href: "/projects" },
   { label: "Process", href: "/process" },

@@ -1,36 +1,18 @@
-import { Archivo, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
+import { Anton, Archivo } from "next/font/google";
 
-/**
- * Archivo — neo-grotesk workhorse. Navigation, headlines, body, UI.
- * Variable weight axis (100–900).
- */
+/** Anton — heavy condensed display type for headlines and wordmarks. */
+export const anton = Anton({
+  subsets: ["latin"],
+  variable: "--font-anton",
+  display: "swap",
+  weight: "400",
+});
+
+/** Archivo — body, labels and UI. Variable weight axis. */
 export const archivo = Archivo({
   subsets: ["latin"],
   variable: "--font-archivo",
   display: "swap",
 });
 
-/**
- * Instrument Serif — restrained editorial contrast, used sparingly
- * for single words inside architectural headlines.
- */
-export const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  variable: "--font-instrument",
-  display: "swap",
-  weight: "400",
-  style: ["normal", "italic"],
-});
-
-/**
- * IBM Plex Mono — technical metadata, section marks, dimensions,
- * coordinates, part numbers.
- */
-export const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  variable: "--font-plex-mono",
-  display: "swap",
-  weight: ["400", "500"],
-});
-
-export const fontVariables = `${archivo.variable} ${instrumentSerif.variable} ${plexMono.variable}`;
+export const fontVariables = `${anton.variable} ${archivo.variable}`;

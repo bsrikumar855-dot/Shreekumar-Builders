@@ -2,15 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/layout/PageHeader";
 import SmartImage from "@/components/ui/SmartImage";
-import MaterialSwatch from "@/components/ui/MaterialSwatch";
-import Reveal from "@/components/animations/Reveal";
-import RevealText from "@/components/animations/RevealText";
-import PendingNote from "@/components/ui/PendingNote";
+import WhyUs from "@/components/sections/WhyUs";
+import CtaBand from "@/components/sections/CtaBand";
+import { PendingNote } from "@/components/ui/Bits";
 import { materials } from "@/lib/data/process";
 import { services } from "@/lib/data/services";
 import { site } from "@/lib/data/site";
-import { buttonGhost } from "@/components/animations/MagneticButton";
-import ScrollToButton from "@/components/ui/ScrollToButton";
 
 export const metadata: Metadata = {
   title: "About",
@@ -19,47 +16,41 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
-const principles = [
-  {
-    index: "01",
-    title: "Set out before building",
-    body: "Grid lines, levels and dimensions are agreed and marked on site before the first pour or the first block is laid. It is the cheapest correction available.",
+/** CSS-only material swatches in the brand palette. */
+const SWATCH: Record<string, React.CSSProperties> = {
+  concrete: {
+    background:
+      "radial-gradient(circle at 20% 30%, #0d0b0922 0 3px, transparent 4px) 0 0/22px 22px, #cfc6b8",
   },
-  {
-    index: "02",
-    title: "Services planned, not chased",
-    body: "Conduits, sleeves and pipe routes are resolved with the structure. Chasing services into finished walls is slow, messy and always leaves a weak patch.",
+  stone: {
+    background:
+      "repeating-linear-gradient(0deg, transparent 0 46px, #0d0b09 46px 49px), repeating-linear-gradient(90deg, transparent 0 78px, #0d0b09 78px 81px), #b9a58a",
   },
-  {
-    index: "03",
-    title: "Trade coordination is our job",
-    body: "Building, electrical and plumbing are our own scope. That removes the gap where one trade's assumption becomes another trade's problem on site.",
+  ceramic: {
+    background:
+      "conic-gradient(from 90deg at 3px 3px, transparent 90deg, #0d0b09 0) 0 0/56px 56px, #f4620b",
   },
-  {
-    index: "04",
-    title: "Checked before it is covered",
-    body: "Electrical, plumbing and drainage are verified while they are still visible. Once a wall is closed, verification is guesswork.",
+  steel: {
+    background:
+      "repeating-linear-gradient(90deg, #2c2824 0 14px, #3b3631 14px 28px), #2c2824",
   },
-  {
-    index: "05",
-    title: "Finish is part of the job",
-    body: "Tiling, plastering and painting are planned from the set-out, not improvised at the end. A finished surface should read as one continuous plane.",
+  timber: {
+    background:
+      "repeating-linear-gradient(0deg, #a34105 0 9px, #8a3604 9px 11px, #b94c0c 11px 20px)",
   },
-  {
-    index: "06",
-    title: "Handover in writing",
-    body: "Outstanding items are listed and closed, the site is cleared, and what was built is explained before the keys change hands.",
+  glass: {
+    background:
+      "linear-gradient(115deg, transparent 38%, #ffffff88 38% 46%, transparent 46% 58%, #ffffff55 58% 62%, transparent 62%), #9ac4c4",
   },
-];
+};
 
 export default function AboutPage() {
   return (
     <>
       <PageHeader
-        index="04"
+        index="06"
         label="About"
-        lines={["Building is a craft.", "Execution is a discipline."]}
-        serifLine="That is the whole idea."
+        lines={["Building is a craft.", "Execution is a discipline"]}
         lead={`${site.name} — ${site.tradeName} — works across building and civil, electrical, plumbing and tiling for residential and commercial projects.`}
         meta={[
           { k: "Trades", v: "06" },
@@ -67,164 +58,105 @@ export default function AboutPage() {
         ]}
       />
 
-      {/* Statement + drawing */}
-      <div className="grain border-t border-ink-12 py-[var(--spacing-section)]">
-        <div className="shell">
-          <div className="grid grid-cols-12 gap-x-5 gap-y-12 lg:gap-x-8">
-            <div className="col-span-12 lg:col-span-6">
-              <h2 className="meta text-ink-35">The company</h2>
-              <div className="mt-6 space-y-5">
-                <Reveal y={20}>
-                  <p className="lead max-w-[54ch] text-ink-70">
-                    Most construction problems are not dramatic. They are small
-                    misunderstandings about where something goes, made expensive by
-                    the order they were made in.
-                  </p>
-                </Reveal>
-                <Reveal y={20} delay={0.06}>
-                  <p className="body-copy max-w-[54ch] text-ink-70">
-                    Working as a single scope across the trades is how those
-                    misunderstandings are designed out. The set-out is agreed
-                    before the structure goes up. The services are drawn with the
-                    structure, not after it. The finishes are planned from the same
-                    set-out that set the dimensions.
-                  </p>
-                </Reveal>
-                <Reveal y={20} delay={0.12}>
-                  <p className="body-copy max-w-[54ch] text-ink-70">
-                    That is a less dramatic way to describe quality than a promise,
-                    and it is the one that survives contact with a real site.
-                  </p>
-                </Reveal>
-              </div>
+      {/* Statement */}
+      <section data-parallax-scope className="overflow-hidden bg-cream py-[var(--spacing-section)]">
+        <div className="shell grid grid-cols-12 items-center gap-x-10 gap-y-14">
+          <div className="col-span-12 lg:col-span-6">
+            <h2 className="label">The company</h2>
+            <div className="mt-8 space-y-6">
+              <p className="lead" data-reveal>
+                Most construction problems are not dramatic. They are small misunderstandings about
+                where something goes, made expensive by the order they were made in.
+              </p>
+              <p className="text-[1.05rem] leading-[1.75] text-ink-70" data-reveal data-delay="100">
+                Working as a single scope across the trades is how those misunderstandings are
+                designed out. The set-out is agreed before the structure goes up. The services are
+                drawn with the structure, not after it. The finishes are planned from the same
+                set-out that set the dimensions.
+              </p>
+              <p className="text-[1.05rem] leading-[1.75] text-ink-70" data-reveal data-delay="200">
+                That is a less dramatic way to describe quality than a promise, and it is the one
+                that survives contact with a real site.
+              </p>
+            </div>
 
-              <div className="mt-9 flex flex-wrap gap-2">
-                {services.map((s) => (
+            <ul className="mt-9 flex flex-wrap gap-2" data-reveal>
+              {services.map((s) => (
+                <li key={s.slug}>
                   <Link
-                    key={s.slug}
                     href={`/services/${s.slug}`}
-                    className="meta border border-ink-12 px-3 py-2 text-ink-60 transition-colors duration-500 hover:border-ink hover:text-ink"
+                    className="label inline-block border-2 border-ink bg-paper px-3 py-2 transition-colors duration-300 hover:bg-orange"
                   >
                     {s.index} · {s.title}
                   </Link>
-                ))}
-              </div>
+                </li>
+              ))}
+            </ul>
 
-              <div className="mt-9">
-                <PendingNote>
-                  Founding year, team history and company profile to be supplied
-                </PendingNote>
-              </div>
+            <div className="mt-9">
+              <PendingNote>Founding year, team history and company profile to be supplied</PendingNote>
             </div>
+          </div>
 
-            <div className="col-span-12 lg:col-span-5 lg:col-start-8">
-              <Reveal y={26}>
-                <SmartImage
-                  src="about-workshop.webp"
-                  alt="Shreekumar Builders — building, electrical, plumbing and tiling works"
-                  plate="plan"
-                  className="aspect-square w-full"
-                  reveal
-                  caption="Drawing 01"
-                  sizes="(max-width: 1023px) 100vw, 36rem"
-                />
-              </Reveal>
+          <div className="col-span-12 lg:col-span-6">
+            <div data-parallax="0.1">
+              <div data-rotate="5">
+                <div className="card overflow-hidden">
+                  <SmartImage
+                    src="about-workshop.webp"
+                    alt="Shreekumar Builders — building, electrical, plumbing and tiling works"
+                    plate="plan"
+                    tone="orange"
+                    parallax={-0.12}
+                    className="aspect-square w-full"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Principles */}
-      <section
-        data-surface="light"
-        className="grain border-t border-ink-12 bg-limestone py-[var(--spacing-section)]"
-        aria-labelledby="principles-title"
-      >
-        <div className="shell">
-          <h2 id="principles-title" className="heading max-w-[16ch] text-ink">
-            <span className="block">Six working</span>
-            <span className="serif block font-normal italic">principles.</span>
-          </h2>
-
-          <ol className="mt-12 border-t border-ink-12 lg:mt-16">
-            {principles.map((p) => (
-              <li key={p.index}>
-                <Reveal y={24}>
-                  <div className="grid grid-cols-12 items-baseline gap-x-5 gap-y-3 border-b border-ink-12 py-7 lg:gap-x-8 lg:py-9">
-                    <span className="meta col-span-3 text-ink-35 lg:col-span-1">
-                      {p.index}
-                    </span>
-                    <div className="col-span-9 lg:col-span-4">
-                      <RevealText
-                        as="h3"
-                        text={p.title}
-                        className="text-[clamp(1.35rem,2.4vw,2.1rem)] leading-[1.02] tracking-[-0.035em] text-ink"
-                      />
-                    </div>
-                    <p className="body-copy col-span-12 max-w-[56ch] text-ink-70 lg:col-span-6 lg:col-start-7">
-                      {p.body}
-                    </p>
-                  </div>
-                </Reveal>
-              </li>
-            ))}
-          </ol>
-        </div>
       </section>
 
+      <WhyUs id="about-why" />
+
       {/* Materials */}
-      <section
-        data-surface="light"
-        className="grain border-t border-ink-12 py-[var(--spacing-section)]"
-        aria-labelledby="materials-title"
-      >
+      <section className="bg-sand py-[var(--spacing-section)]" aria-labelledby="materials-title">
         <div className="shell">
-          <h2 id="materials-title" className="heading max-w-[18ch] text-ink">
-            Materials, and how they behave
+          <h2 id="materials-title" className="h2" data-split>
+            Materials, and
+            <br />
+            how they behave
           </h2>
 
-          <ul className="mt-10 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
+          <ul className="mt-14 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
             {materials.map((m, i) => (
-              <li key={m.name}>
-                <Reveal y={24} delay={i * 0.05} className="h-full">
-                  <div className="flex h-full flex-col">
-                    <div className="relative aspect-[4/3] overflow-hidden bg-limestone">
-                      <MaterialSwatch tone={m.tone} className="h-full w-full" />
-                      <span className="meta-sm absolute left-4 top-4 text-ink-60">
+              <li key={m.name} data-parallax-scope>
+                <div data-parallax={[0.06, -0.06, 0.12][i % 3]}>
+                  <div data-reveal data-delay={String((i % 3) * 100)} className="card h-full overflow-hidden bg-paper">
+                    <div
+                      className="relative aspect-[16/10] border-b-2 border-ink"
+                      style={SWATCH[m.tone]}
+                      role="img"
+                      aria-label={`${m.name} swatch`}
+                    >
+                      <span className="font-display absolute left-3 top-3 bg-ink px-3 py-1 text-xl leading-none text-cream">
                         {m.index}
                       </span>
                     </div>
-                    <h3 className="mt-5 text-[1.5rem] leading-none tracking-[-0.035em] text-ink">
-                      {m.name}
-                    </h3>
-                    <p className="meta-sm mt-2.5 text-oxide">{m.note}</p>
-                    <p className="body-copy mt-3 max-w-[40ch] text-ink-70">{m.detail}</p>
+                    <div className="p-6">
+                      <h3 className="h3">{m.name}</h3>
+                      <p className="label mt-3 text-rust">{m.note}</p>
+                      <p className="mt-4 text-ink-70">{m.detail}</p>
+                    </div>
                   </div>
-                </Reveal>
+                </div>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* Close */}
-      <section data-surface="light" className="grain border-t border-ink-12 py-16 lg:py-24">
-        <div className="shell">
-          <div className="flex flex-wrap items-center justify-between gap-6">
-            <h2 className="display-2 text-ink">
-              <RevealText as="span" text="Let's build it right." />
-            </h2>
-            <div className="flex flex-wrap gap-3">
-              <ScrollToButton target="contact" className={buttonGhost} cursorLabel="Talk">
-                Start a project <span className="arrow-shift">→</span>
-              </ScrollToButton>
-              <Link href="/process" className={buttonGhost} data-cursor="See">
-                See the process
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CtaBand />
     </>
   );
 }

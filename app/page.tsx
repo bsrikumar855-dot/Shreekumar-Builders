@@ -1,34 +1,38 @@
-import type { Metadata } from "next";
-import HomeIntro from "@/components/sections/HomeIntro";
-import Introduction from "@/components/sections/Introduction";
-import CapabilityIndex from "@/components/sections/CapabilityIndex";
-import ProjectsShowcase from "@/components/sections/ProjectsShowcase";
-import ProcessTimeline from "@/components/sections/ProcessTimeline";
-import ServicesList from "@/components/sections/ServicesList";
-import MaterialsExplorer from "@/components/sections/MaterialsExplorer";
-import AboutSection from "@/components/sections/AboutSection";
-import WhyShreekumar from "@/components/sections/WhyShreekumar";
-import ProjectCta from "@/components/sections/ProjectCta";
-import ContactSection from "@/components/sections/ContactSection";
+import Hero from "@/components/sections/Hero";
+import Positioning from "@/components/sections/Positioning";
+import ServicesGrid from "@/components/sections/ServicesGrid";
+import ProjectsPreview from "@/components/sections/ProjectsPreview";
+import ProcessStepper from "@/components/sections/ProcessStepper";
+import WhyUs from "@/components/sections/WhyUs";
+import CtaBand from "@/components/sections/CtaBand";
+import { Marquee } from "@/components/ui/Bits";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+const TRADES = ["Building", "Electrical", "Plumbing", "Tile Laying", "Renovation", "Finishing"];
 
+/**
+ * Home — proof-first, single primary CTA (see research notes in the repo
+ * history): hero → trades ticker → position → services → work → process →
+ * principles → contact.
+ */
 export default function HomePage() {
   return (
     <>
-      <HomeIntro />
-      <Introduction />
-      <CapabilityIndex />
-      <ProjectsShowcase />
-      <ProcessTimeline />
-      <ServicesList />
-      <MaterialsExplorer />
-      <AboutSection />
-      <WhyShreekumar />
-      <ProjectCta />
-      <ContactSection />
+      <Hero />
+
+      <div className="relative z-10 -rotate-[1.2deg] border-y-2 border-ink bg-orange py-4" data-skew>
+        <Marquee
+          items={TRADES}
+          className="font-display text-[clamp(1.6rem,3.4vw,3rem)] uppercase leading-none"
+          itemClassName="gap-[0.5em] pr-[0.5em]"
+        />
+      </div>
+
+      <Positioning />
+      <ServicesGrid />
+      <ProjectsPreview />
+      <ProcessStepper />
+      <WhyUs />
+      <CtaBand />
     </>
   );
 }

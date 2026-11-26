@@ -2,61 +2,42 @@
 
 /* ==========================================================================
    SHREEKUMAR BUILDERS — DESIGN SYSTEM
-   A material-led architectural system: bone, limestone, concrete, stone,
-   graphite, ink, with a single iron-oxide accent.
+   Bold construction-poster system: signal orange, rust brown, warm cream and
+   heavy black condensed type. Flat colour, hard shadows, big type that
+   overlaps imagery, and layered parallax.
    ========================================================================== */
 
 @theme {
-  /* ---- Type families ---- */
   --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
-  --font-serif: var(--font-instrument), "Times New Roman", serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-display: var(--font-anton), Impact, "Arial Narrow Bold", sans-serif;
 
-  /* ---- Material palette ---- */
-  --color-bone: #efeae2;
-  --color-limestone: #e3ddd2;
-  --color-concrete: #c6c0b6;
-  --color-stone: #8d877e;
-  --color-graphite: #322f2b;
-  --color-ink: #121110;
+  /* Palette (sampled from the reference) */
+  --color-orange: #f4620b;
+  --color-orange-soft: #ff8a3d;
+  --color-rust: #a34105;
+  --color-rust-deep: #6e2a03;
+  --color-cream: #fdf5e8;
+  --color-sand: #f6e4cb;
+  --color-paper: #ffffff;
+  --color-ink: #0d0b09;
+  --color-ink-70: color-mix(in oklab, var(--color-ink) 72%, transparent);
+  --color-ink-50: color-mix(in oklab, var(--color-ink) 55%, transparent);
+  --color-ink-15: color-mix(in oklab, var(--color-ink) 15%, transparent);
+  --color-ink-08: color-mix(in oklab, var(--color-ink) 8%, transparent);
+  --color-cream-70: color-mix(in oklab, var(--color-cream) 72%, transparent);
+  --color-cream-45: color-mix(in oklab, var(--color-cream) 48%, transparent);
+  --color-cream-15: color-mix(in oklab, var(--color-cream) 15%, transparent);
 
-  /* ---- Accent: iron oxide / construction marking ---- */
-  --color-oxide: #bd5b1a;
-  --color-oxide-deep: #8d4311;
-  --color-oxide-tint: #e6c6a3;
+  --spacing-gutter: clamp(1.1rem, 3.6vw, 4rem);
+  --spacing-section: clamp(5rem, 10vw, 10rem);
 
-  /* ---- Semantic surfaces ---- */
-  --color-surface: var(--color-bone);
-  --color-surface-2: var(--color-limestone);
-  --color-surface-3: var(--color-concrete);
-  --color-ink-70: color-mix(in oklab, var(--color-ink) 70%, transparent);
-  --color-ink-45: color-mix(in oklab, var(--color-ink) 45%, transparent);
-  --color-ink-22: color-mix(in oklab, var(--color-ink) 22%, transparent);
-  --color-ink-12: color-mix(in oklab, var(--color-ink) 12%, transparent);
-  --color-ink-06: color-mix(in oklab, var(--color-ink) 6%, transparent);
-  --color-bone-60: color-mix(in oklab, var(--color-bone) 60%, transparent);
-  --color-bone-35: color-mix(in oklab, var(--color-bone) 35%, transparent);
-  --color-bone-14: color-mix(in oklab, var(--color-bone) 14%, transparent);
-  --color-bone-08: color-mix(in oklab, var(--color-bone) 8%, transparent);
-
-  /* ---- Layout ---- */
-  --spacing-gutter: clamp(1.15rem, 3.6vw, 4.5rem);
-  --spacing-section: clamp(5.5rem, 11vw, 11.5rem);
-
-  /* ---- Motion ---- */
-  --ease-arch: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-inout-arch: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* ---- Radii: architectural. Sharp. ---- */
-  --radius-none: 0px;
-  --radius-hair: 1px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* ==========================================================================
    Base
    ========================================================================== */
-
 @layer base {
   *,
   *::before,
@@ -67,23 +48,23 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: auto;
-    background-color: var(--color-bone);
+    background-color: var(--color-cream);
+    overflow-x: clip;
   }
 
   body {
     margin: 0;
-    background-color: var(--color-bone);
+    background-color: var(--color-cream);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: 0.9375rem;
-    line-height: 1.65;
-    font-synthesis-weight: none;
+    font-size: 1rem;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: clip;
   }
 
-  /* Lenis */
   html.lenis,
   html.lenis body {
     height: auto;
@@ -100,22 +81,17 @@
   h3,
   h4 {
     margin: 0;
-    font-weight: 500;
-    letter-spacing: -0.028em;
-    line-height: 0.94;
+    font-weight: 400;
     text-wrap: balance;
   }
-
   p {
     margin: 0;
     text-wrap: pretty;
   }
-
   a {
     color: inherit;
     text-decoration: none;
   }
-
   button {
     font: inherit;
     color: inherit;
@@ -124,14 +100,11 @@
     padding: 0;
     cursor: pointer;
   }
-
   img,
-  svg,
-  video {
+  svg {
     display: block;
     max-width: 100%;
   }
-
   ul,
   ol {
     margin: 0;
@@ -139,321 +112,411 @@
     list-style: none;
   }
 
-  hr {
-    border: 0;
-    border-top: 1px solid var(--color-ink-12);
-    margin: 0;
-  }
-
   ::selection {
-    background: var(--color-oxide);
-    color: var(--color-bone);
+    background: var(--color-orange);
+    color: var(--color-ink);
   }
-
   :focus-visible {
-    outline: 2px solid var(--color-oxide);
+    outline: 3px solid var(--color-ink);
     outline-offset: 3px;
   }
-
-  [data-surface="ink"] :focus-visible {
-    outline-color: var(--color-oxide-tint);
+  .on-dark :focus-visible {
+    outline-color: var(--color-orange-soft);
   }
 }
 
 /* ==========================================================================
-   Utilities
+   Layout + type utilities
    ========================================================================== */
-
-/* Page container: consistent margins + 12 column grid */
 @utility shell {
   width: 100%;
-  max-width: 108rem;
+  max-width: 100rem;
   margin-inline: auto;
   padding-inline: var(--spacing-gutter);
 }
 
-@utility shell-tight {
-  width: 100%;
-  max-width: 88rem;
-  margin-inline: auto;
-  padding-inline: var(--spacing-gutter);
-}
-
-/* Technical metadata label — the connective tissue of the whole layout */
-@utility meta {
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-@utility meta-sm {
-  font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-@utility hairline {
-  background-color: var(--color-ink-12);
-}
-
-/* Fluid display type */
+/* Heavy condensed display type */
 @utility display {
-  font-size: clamp(3.1rem, 11.4vw, 11.5rem);
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(3.4rem, 19vw, 14rem);
   line-height: 0.86;
-  letter-spacing: -0.045em;
-  font-weight: 500;
+  letter-spacing: -0.012em;
+  @media (min-width: 768px) {
+    font-size: clamp(5rem, 14.5vw, 14rem);
+  }
 }
-
 @utility display-2 {
-  font-size: clamp(2.35rem, 7.4vw, 7rem);
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(2.7rem, 12.5vw, 8.5rem);
   line-height: 0.9;
-  letter-spacing: -0.04em;
-  font-weight: 500;
+  @media (min-width: 768px) {
+    font-size: clamp(3.4rem, 9vw, 8.5rem);
+  }
+  letter-spacing: -0.008em;
 }
-
-@utility heading {
-  font-size: clamp(1.85rem, 4.1vw, 4rem);
-  line-height: 0.96;
-  letter-spacing: -0.035em;
-  font-weight: 500;
+@utility h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(2.3rem, 6vw, 5.6rem);
+  line-height: 0.92;
+  letter-spacing: -0.004em;
 }
-
+@utility h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  line-height: 0.98;
+}
+@utility label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
 @utility lead {
-  font-size: clamp(1.02rem, 1.42vw, 1.4rem);
+  font-size: clamp(1.05rem, 1.5vw, 1.45rem);
   line-height: 1.5;
-  letter-spacing: -0.011em;
-}
-
-@utility body-copy {
-  font-size: 0.9375rem;
-  line-height: 1.72;
-  letter-spacing: -0.003em;
-}
-
-@utility measure {
-  max-width: 46ch;
-}
-
-@utility measure-wide {
-  max-width: 62ch;
-}
-
-/* Editorial serif accent */
-@utility serif {
-  font-family: var(--font-serif);
-  font-style: normal;
-  letter-spacing: -0.01em;
-}
-
-/* Underline that wipes in from the left */
-@utility rule-link {
-  position: relative;
-  display: inline-block;
-}
-@utility rule-link-after {
-  content: "";
-}
-
-/* Hide native cursor when custom cursor is active */
-@utility cursor-none-fine {
-  cursor: none;
-}
-
-/* Aspect helpers */
-@utility ratio-portrait {
-  aspect-ratio: 3 / 4;
-}
-@utility ratio-landscape {
-  aspect-ratio: 4 / 3;
-}
-@utility ratio-wide {
-  aspect-ratio: 16 / 9;
-}
-@utility ratio-square {
-  aspect-ratio: 1;
+  font-weight: 500;
 }
 
 /* ==========================================================================
-   Components / patterns
-   --------------------------------------------------------------------------
-   Declared inside @layer components so that any Tailwind utility always wins.
-   Unlayered rules would otherwise override utilities such as `hidden`.
+   Components
    ========================================================================== */
 @layer components {
+  /* --- Buttons: hard offset shadow, press on hover -------------------- */
+  .btn {
+    --sh: var(--color-ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    min-height: 3.25rem;
+    padding: 0.85rem 1.6rem;
+    border: 2px solid var(--color-ink);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 5px 5px 0 var(--sh);
+    transition:
+      transform 0.35s var(--ease-out),
+      box-shadow 0.35s var(--ease-out),
+      background-color 0.3s;
+  }
+  .btn:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 var(--sh);
+  }
+  .btn:active {
+    transform: translate(5px, 5px);
+    box-shadow: 0 0 0 var(--sh);
+  }
+  .btn-orange {
+    background: var(--color-orange);
+    color: var(--color-ink);
+  }
+  .btn-ink {
+    background: var(--color-ink);
+    color: var(--color-cream);
+    --sh: var(--color-orange);
+    border-color: var(--color-ink);
+  }
+  .btn-paper {
+    background: var(--color-cream);
+    color: var(--color-ink);
+  }
+  .btn-sm {
+    min-height: 2.6rem;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.7rem;
+    box-shadow: 3px 3px 0 var(--sh);
+  }
+  .btn .arr {
+    display: inline-block;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .btn:hover .arr,
+  .group:hover .arr {
+    transform: translateX(0.35rem);
+  }
 
-/* --- Surfaces ------------------------------------------------------------ */
-.surface-ink {
-  background-color: var(--color-ink);
-  color: var(--color-bone);
-}
-.surface-stone {
-  background-color: var(--color-limestone);
-}
+  /* --- Link underline ------------------------------------------------- */
+  .u-link {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+    transition: background-size 0.45s var(--ease-out);
+    padding-bottom: 2px;
+  }
+  .u-link:hover,
+  .u-link[aria-current="page"] {
+    background-size: 100% 2px;
+  }
 
-/* --- Animated link underline ------------------------------------------- */
-.link-rule {
-  position: relative;
-  display: inline-block;
-  padding-bottom: 0.15em;
-}
-.link-rule::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform 0.55s var(--ease-arch);
-}
-.link-rule:hover::after,
-.link-rule:focus-visible::after,
-.link-rule[data-active="true"]::after {
-  transform: scaleX(1);
-  transform-origin: left center;
-}
+  /* --- Outline type (text over imagery) -------------------------------- */
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-ink);
+    paint-order: stroke fill;
+  }
+  .outline-orange {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-orange);
+  }
+  .outline-cream {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-cream-45);
+  }
 
-/* --- Arrow micro-interaction ------------------------------------------- */
-.arrow-shift {
-  display: inline-block;
-  transition: transform 0.5s var(--ease-arch);
-}
-.group:hover .arrow-shift,
-a:hover .arrow-shift,
-button:hover .arrow-shift {
-  transform: translateX(0.42em);
-}
+  /* --- Cards ----------------------------------------------------------- */
+  .card {
+    background: var(--color-paper);
+    border: 2px solid var(--color-ink);
+    box-shadow: 8px 8px 0 var(--color-ink);
+    transition:
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out);
+  }
+  a.card:hover {
+    transform: translate(4px, 4px);
+    box-shadow: 4px 4px 0 var(--color-ink);
+  }
 
-/* --- Film grain: gives flat colour fields a material surface -----------
-   A static, cached tile rather than an inline SVG turbulence filter, which
-   the browser re-rasterised for every surface on the page. */
-.grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.5;
-  mix-blend-mode: multiply;
-  background-image: url("/textures/grain.png");
-  background-repeat: repeat;
-  background-size: 96px 96px;
-}
-[data-surface="ink"] .grain::after,
-.surface-ink .grain::after {
-  mix-blend-mode: overlay;
-  opacity: 0.28;
-}
+  /* --- Form fields ---------------------------------------------------- */
+  .field {
+    width: 100%;
+    background: var(--color-paper);
+    border: 2px solid var(--color-ink);
+    padding: 0.95rem 1rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--color-ink);
+    border-radius: 0;
+    transition: box-shadow 0.3s var(--ease-out);
+  }
+  .field:focus {
+    outline: none;
+    box-shadow: 5px 5px 0 var(--color-orange);
+  }
+  .field::placeholder {
+    color: var(--color-ink-50);
+  }
 
-/* --- Custom cursor ------------------------------------------------------ */
-@media (hover: hover) and (pointer: fine) {
-  html[data-custom-cursor="on"],
-  html[data-custom-cursor="on"] * {
-    cursor: none !important;
+  /* --- Marquee ------------------------------------------------------- */
+  .marquee {
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 38s linear infinite;
+  }
+  .marquee-track[data-dir="rev"] {
+    animation-direction: reverse;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  /* --- Crane sway ----------------------------------------------------- */
+  .sway {
+    transform-origin: 50% 0;
+    animation: sway 6.5s var(--ease-inout) infinite;
+  }
+  @keyframes sway {
+    0%,
+    100% {
+      transform: rotate(-1.6deg);
+    }
+    50% {
+      transform: rotate(1.6deg);
+    }
+  }
+
+  html.fx .hero-drop {
+    animation: drop 1.9s var(--ease-out) 0.2s both;
+  }
+  @keyframes drop {
+    from {
+      transform: translate3d(0, -70vh, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .float-slow {
+    animation: float 9s var(--ease-inout) infinite;
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -14px, 0);
+    }
+  }
+
+  .spin-slow {
+    animation: spin 40s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* --- Diagonal hazard stripe ---------------------------------------- */
+  .hazard {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-ink) 0 14px,
+      var(--color-orange) 14px 28px
+    );
+  }
+
+  /* --- Scrollbar ------------------------------------------------------ */
+  @media (min-width: 768px) {
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--color-cream);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-ink);
+      border: 2px solid var(--color-cream);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-orange);
+    }
+  }
+
+  /* ======================================================================
+     Scroll FX — only active when the inline boot script adds html.fx
+     (JS present and motion allowed). Without it everything is visible.
+     ====================================================================== */
+  html.fx [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 44px, 0);
+    transition:
+      opacity 0.9s var(--ease-out) var(--d, 0ms),
+      transform 1.15s var(--ease-out) var(--d, 0ms);
+    will-change: transform, opacity;
+  }
+  html.fx [data-reveal="left"] {
+    transform: translate3d(-70px, 0, 0);
+  }
+  html.fx [data-reveal="right"] {
+    transform: translate3d(70px, 0, 0);
+  }
+  html.fx [data-reveal="fade"] {
+    transform: none;
+  }
+  html.fx [data-reveal="scale"] {
+    transform: scale(0.9);
+  }
+  html.fx [data-reveal="clip"] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1.2s var(--ease-inout) var(--d, 0ms);
+  }
+  html.fx [data-reveal="wipe"] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1.3s var(--ease-inout) var(--d, 0ms);
+  }
+  html.fx [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+    will-change: auto;
+  }
+
+  /* Word-by-word headline masks (words wrapped by ScrollFX) */
+  .sw {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+  .sw > span {
+    display: inline-block;
+    transform: translate3d(0, 112%, 0);
+    transition: transform 1s var(--ease-out) calc(var(--i, 0) * 60ms + var(--d, 0ms));
+  }
+  .is-in .sw > span,
+  .sw.is-in > span {
+    transform: none;
+  }
+
+  /* Elements moved by GSAP get their own layer */
+  [data-parallax],
+  [data-parallax-x],
+  [data-spin],
+  [data-scale],
+  [data-rotate],
+  [data-mouse] {
+    will-change: transform;
+  }
+
+  /* Pinned process stepper: list layout by default, pinned under html.fx */
+  .steps-item {
+    padding-block: 3rem;
+  }
+  html.fx .steps {
+    height: calc(var(--n) * 62vh + 100vh);
+  }
+  html.fx .steps-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+  }
+  html.fx .steps-item {
+    position: absolute;
+    inset: 0;
+    padding-block: 7.5rem 2.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 40px, 0);
+    transition:
+      opacity 0.7s var(--ease-out),
+      transform 0.9s var(--ease-out),
+      visibility 0s linear 0.7s;
+  }
+  html.fx .steps-item[data-active="true"] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+  .steps-bar {
+    transform-origin: left center;
+    transform: scaleX(var(--p, 0));
   }
 }
-
-/* --- Reveal primitives -------------------------------------------------- */
-.mask-line {
-  display: block;
-  overflow: hidden;
-}
-.mask-line > span,
-.mask-line > em {
-  display: block;
-  will-change: transform;
-}
-
-/* Elements animated by GSAP start visible if JS never runs */
-.js-reveal {
-  will-change: transform, opacity;
-}
-
-/* --- Technical drawing motifs ------------------------------------------ */
-.tick-rule {
-  background-image: repeating-linear-gradient(
-    to right,
-    currentColor 0 1px,
-    transparent 1px 8px
-  );
-}
-
-.crosshair::before,
-.crosshair::after {
-  content: "";
-  position: absolute;
-  background: currentColor;
-}
-.crosshair::before {
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  transform: translateX(-50%);
-}
-.crosshair::after {
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  transform: translateY(-50%);
-}
-
-/* --- Textarea / input reset for the contact form ------------------------ */
-.field {
-  width: 100%;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--color-ink-22);
-  padding: 0.9rem 0;
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  color: inherit;
-  transition: border-color 0.4s var(--ease-arch);
-}
-.field:focus {
-  outline: none;
-  border-bottom-color: var(--color-oxide);
-}
-.field::placeholder {
-  color: color-mix(in oklab, currentColor 42%, transparent);
-}
-
-/* --- Scrollbar ---------------------------------------------------------- */
-@media (min-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 9px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--color-limestone);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-stone);
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-graphite);
-  }
-}
-
-/* --- Hero entrance gates ------------------------------------------------ */
-[data-hero-frame],
-[data-hero-scroll] {
-  opacity: 0;
-}
-
-} /* end @layer components */
 
 /* ==========================================================================
-   Reduced motion
+   Reduced motion — parallax/reveals are never initialised (no html.fx),
+   remaining CSS animation is neutralised.
    ========================================================================== */
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -462,12 +525,5 @@ button:hover .arrow-shift {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
-  }
-  .grain::after {
-    display: none;
-  }
-  [data-hero-frame],
-  [data-hero-scroll] {
-    opacity: 1 !important;
   }
 }

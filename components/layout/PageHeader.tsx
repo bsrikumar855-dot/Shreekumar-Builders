@@ -1,112 +1,93 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
-import Reveal from "@/components/animations/Reveal";
-import RevealText from "@/components/animations/RevealText";
-import { SectionMark, TickChain } from "@/components/ui/Drafting";
+import { Blob } from "@/components/ui/Bits";
 
 type Props = {
   index: string;
   label: string;
-  /** Each array item becomes one line of the display headline. */
+  /** Title lines; the last line is set in orange. */
   lines: string[];
-  /** A trailing line set in the editorial serif. */
-  serifLine?: string;
   lead?: string;
   meta?: { k: string; v: string }[];
-  tone?: "light" | "dark";
+  crumbs?: { label: string; href?: string }[];
+  children?: ReactNode;
 };
 
-/**
- * PageHeader
- * The shared opening for every interior page: section mark, drawn rule,
- * display headline set line by line, and a short specification column.
- */
-export default function PageHeader({
-  index,
-  label,
-  lines,
-  serifLine,
-  lead,
-  meta,
-  tone = "light",
-}: Props & { children?: ReactNode }) {
-  const dark = tone === "dark";
-
+/** Shared page opener: layered blobs, giant title, breadcrumb, hazard rule. */
+export default function PageHeader({ index, label, lines, lead, meta, crumbs, children }: Props) {
   return (
     <header
-      data-surface={tone}
-      className={`grain relative pb-14 pt-[124px] lg:pb-20 lg:pt-[176px] ${
-        dark ? "text-bone" : "text-ink"
-      }`}
+      data-parallax-scope
+      className="relative isolate overflow-hidden bg-cream pb-16 pt-[9.5rem] md:pb-24 md:pt-[11rem]"
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
-        <div className="shell h-full">
-          <div className="relative h-full">
-            <div
-              className={`absolute inset-y-0 left-0 w-px ${dark ? "bg-bone-08" : "bg-ink-06"}`}
-            />
-            <div
-              className={`absolute inset-y-0 right-0 w-px ${dark ? "bg-bone-08" : "bg-ink-06"}`}
-            />
-          </div>
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div data-parallax="-0.3" className="absolute -right-[14%] -top-[30%] w-[62vw] max-w-[860px]">
+          <Blob variant="a" fill="var(--color-orange)" className="w-full" />
+        </div>
+        <div data-parallax="-0.14" className="absolute -bottom-[66%] right-[24%] hidden w-[34vw] max-w-[520px] lg:block">
+          <Blob variant="c" fill="var(--color-rust)" className="w-full" />
+        </div>
+        <div
+          data-parallax="0.35"
+          className="font-display outline-text absolute -bottom-[6%] right-[2%] select-none text-[clamp(10rem,30vw,30rem)] leading-none opacity-[0.16]"
+        >
+          {index}
         </div>
       </div>
 
-      <div className="shell relative">
-        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
-          <SectionMark index={index} label={label} tone={tone} />
-          {meta && meta.length > 0 && (
-            <dl className="flex flex-wrap gap-x-8 gap-y-2 lg:justify-end">
-              {meta.map((m) => (
-                <div key={m.k} className="flex items-baseline gap-2.5">
-                  <dt className={`meta-sm ${dark ? "text-bone-35" : "text-ink-35"}`}>
-                    {m.k}
-                  </dt>
-                  <dd className={`meta ${dark ? "text-bone-70" : "text-ink-70"}`}>{m.v}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-        </div>
-
-        <h1 className="mt-8 lg:mt-12">
-          {lines.map((line, i) => (
-            <RevealText
-              key={line}
-              text={line}
-              className={`display block ${dark ? "text-bone" : "text-ink"} ${
-                lines.length > 1 && i > 0 ? "lg:pl-[8.3%]" : ""
-              }`}
-              delay={i * 0.06}
-            />
+      <div className="shell">
+        <nav aria-label="Breadcrumb" className="label flex flex-wrap items-center gap-2" data-reveal>
+          <Link href="/" className="u-link">
+            Home
+          </Link>
+          {(crumbs ?? [{ label }]).map((c) => (
+            <span key={c.label} className="flex items-center gap-2">
+              <span aria-hidden>/</span>
+              {c.href ? (
+                <Link href={c.href} className="u-link">
+                  {c.label}
+                </Link>
+              ) : (
+                <span aria-current="page" className="bg-ink px-2 py-1 text-cream">
+                  {c.label}
+                </span>
+              )}
+            </span>
           ))}
-          {serifLine && (
-            <RevealText
-              text={serifLine}
-              wordClassName={dark ? "text-oxide-tint" : "text-oxide"}
-              className={`serif display block font-normal italic ${
-                dark ? "text-oxide-tint" : "text-ink"
-              } ${lines.length > 0 ? "lg:pl-[16.6%]" : ""}`}
-              delay={lines.length * 0.06}
-            />
-          )}
+        </nav>
+
+        <h1 className="display mt-8 max-w-[14ch] md:max-w-none" data-split>
+          {lines.map((l, i) => (
+            <span key={l} className={`block ${i === lines.length - 1 ? "text-ink" : ""}`}>
+              {l}
+              {i === lines.length - 1 && <span className="text-orange">.</span>}
+            </span>
+          ))}
         </h1>
 
-        {lead && (
-          <Reveal y={22} className="mt-9 grid grid-cols-12 gap-x-5 lg:mt-14 lg:gap-x-8">
-            <p
-              className={`lead col-span-12 max-w-[52ch] lg:col-span-6 ${
-                dark ? "text-bone-60" : "text-ink-70"
-              }`}
-            >
-              {lead}
-            </p>
-          </Reveal>
+        {(lead || meta) && (
+          <div className="mt-10 grid grid-cols-12 items-end gap-x-6 gap-y-8">
+            {lead && (
+              <p className="lead col-span-12 max-w-[46ch] md:col-span-7" data-reveal data-delay="300">
+                {lead}
+              </p>
+            )}
+            {meta && (
+              <dl className="col-span-12 flex flex-wrap gap-3 md:col-span-5 md:justify-end" data-reveal data-delay="450">
+                {meta.map((m) => (
+                  <div key={m.k} className="border-2 border-ink bg-paper px-4 py-3 shadow-[4px_4px_0_var(--color-ink)]">
+                    <dt className="label text-ink-70">{m.k}</dt>
+                    <dd className="font-display mt-1 text-2xl uppercase leading-none">{m.v}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </div>
         )}
+        {children && <div className="mt-8">{children}</div>}
       </div>
 
-      <div className="shell relative mt-12 lg:mt-16">
-        <TickChain tone={tone} />
-      </div>
+      <div className="hazard absolute inset-x-0 bottom-0 h-3" aria-hidden />
     </header>
   );
 }

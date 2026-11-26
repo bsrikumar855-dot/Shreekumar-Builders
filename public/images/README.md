@@ -1,17 +1,18 @@
 # Photography
 
 Real site photography goes here. Filenames are defined in the data layer —
-drop a file in and it replaces the technical drawing automatically, at build
+drop a file in and it replaces the illustration automatically, at build
 time, with no code changes.
 
 ## How it works
 
-`components/providers/ImageManifestProvider.tsx` reads this directory on the
-server at render time. `components/ui/SmartImage.tsx` checks the filename:
+`components/ui/SmartImage.tsx` checks this directory on the server at render
+time for the filename:
 
 - **File present** → the photograph is served through `next/image` (AVIF/WebP,
-  responsive `sizes`, lazy-loaded), over the technical plate while it loads.
-- **File absent** → the procedural `TechnicalPlate` drawing is shown instead.
+  responsive `sizes`, lazy-loaded), with a gentle parallax drift inside its frame.
+- **File absent** → the on-brand flat illustration from `components/ui/Illustration.tsx` is shown
+  instead.
 
 Nothing is broken by a missing file, and nothing is fabricated.
 

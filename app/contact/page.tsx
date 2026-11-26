@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/layout/PageHeader";
-import ContactSection from "@/components/sections/ContactSection";
-import Reveal from "@/components/animations/Reveal";
+import EnquiryForm from "@/components/sections/EnquiryForm";
+import { PendingNote } from "@/components/ui/Bits";
 import { services } from "@/lib/data/services";
-import { site } from "@/lib/data/site";
+import { allContacts, resolveContact, site } from "@/lib/data/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -19,52 +19,74 @@ const brief = [
 ] as const;
 
 export default function ContactPage() {
+  const contacts = allContacts();
+  const wa = resolveContact("whatsapp");
+  const mail = resolveContact("email");
+  const email = mail.href ? mail.href.replace("mailto:", "") : null;
+  const address = resolveContact("address");
+
   return (
     <>
       <PageHeader
-        index="05"
+        index="07"
         label="Contact"
-        lines={["Let's start", "with the site."]}
-        serifLine="Then the rest follows."
+        lines={["Let's start", "with the site"]}
         lead={`${site.name} carries out building and civil works, electrical, plumbing and tile laying for residential and commercial projects.`}
         meta={[{ k: "Trades", v: "06" }]}
       />
 
-      <div className="grain border-t border-ink-12 pb-[var(--spacing-section)] pt-14 lg:pt-20">
-        <div className="shell">
-          <div className="grid grid-cols-12 gap-x-5 gap-y-12 lg:gap-x-8">
-            <div className="col-span-12 lg:col-span-7">
-              <h2 className="meta text-ink-35">How a project begins</h2>
-              <dl className="mt-6 border-t border-ink-12">
+      <section className="bg-sand py-[var(--spacing-section)]" aria-label="Enquiry">
+        <div className="shell grid grid-cols-12 gap-x-10 gap-y-14">
+          <div className="col-span-12 lg:col-span-7" data-reveal>
+            <EnquiryForm
+              whatsapp={wa.href}
+              email={email}
+              trades={services.map((s) => s.title)}
+            />
+          </div>
+
+          <aside className="col-span-12 space-y-8 lg:col-span-5">
+            <div className="card on-dark bg-ink p-6 text-cream lg:p-8" data-reveal="right">
+              <h2 className="label text-orange">Reach us</h2>
+              <ul className="mt-5">
+                {contacts.map((c) => (
+                  <li key={c.key} className="border-t border-cream-15 py-4">
+                    <p className="label text-cream-45">{c.label}</p>
+                    {c.href ? (
+                      <a href={c.href} className="font-display u-link mt-1 inline-block text-3xl uppercase leading-none">
+                        {c.display}
+                      </a>
+                    ) : (
+                      <p className="font-display mt-1 text-3xl uppercase leading-none text-cream-45">
+                        {c.display}
+                      </p>
+                    )}
+                  </li>
+                ))}
+                <li className="border-t border-cream-15 py-4">
+                  <p className="label text-cream-45">{address.label}</p>
+                  <p className="mt-1 text-cream-45">{address.display}</p>
+                </li>
+              </ul>
+              <div className="mt-4 text-ink">
+                <PendingNote>Replace contact details in lib/data/site.ts</PendingNote>
+              </div>
+            </div>
+
+            <div className="card bg-orange p-6 lg:p-8" data-reveal="right" data-delay="120">
+              <h2 className="label">How a project begins</h2>
+              <dl className="mt-4">
                 {brief.map(([k, v]) => (
-                  <div key={k} className="grid grid-cols-12 gap-x-5 gap-y-2 border-b border-ink-12 py-5 lg:gap-x-8">
-                    <dt className="meta col-span-12 text-ink lg:col-span-3">{k}</dt>
-                    <dd className="body-copy col-span-12 text-ink-70 lg:col-span-9">{v}</dd>
+                  <div key={k} className="border-t-2 border-ink py-4">
+                    <dt className="font-display text-xl uppercase leading-none">{k}</dt>
+                    <dd className="mt-2">{v}</dd>
                   </div>
                 ))}
               </dl>
             </div>
-
-            <div className="col-span-12 lg:col-span-4 lg:col-start-9">
-              <h2 className="meta text-ink-35">Trades</h2>
-              <ul className="mt-6 border-t border-ink-12">
-                {services.map((s) => (
-                  <li key={s.slug}>
-                    <Reveal y={14}>
-                      <div className="flex items-baseline gap-4 border-b border-ink-12 py-3">
-                        <span className="meta-sm w-6 shrink-0 text-ink-25">{s.index}</span>
-                        <span className="body-copy text-ink-70">{s.title}</span>
-                      </div>
-                    </Reveal>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          </aside>
         </div>
-      </div>
-
-      <ContactSection />
+      </section>
     </>
   );
 }

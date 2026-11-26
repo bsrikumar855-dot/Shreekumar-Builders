@@ -2,13 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { fontVariables } from "@/lib/fonts";
 import { site } from "@/lib/data/site";
-import ImageManifestProvider from "@/components/providers/ImageManifestProvider";
-import SmoothScroll from "@/components/layout/SmoothScroll";
-import Cursor from "@/components/layout/Cursor";
-import ScrollProgress from "@/components/layout/ScrollProgress";
+import ScrollFX from "@/components/fx/ScrollFX";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import MobileActionBar from "@/components/layout/MobileActionBar";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -53,42 +49,43 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#efeae2",
+  themeColor: "#f4620b",
   colorScheme: "light",
   width: "device-width",
   initialScale: 1,
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+/**
+ * Runs before first paint. Turns on the scroll-effect styles (html.fx) only
+ * when motion is allowed, and switches them off again if the effects script
+ * has not come up within 4s — content can never stay hidden.
+ */
+const bootFx = `(function(){try{var d=document.documentElement;
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+d.classList.add('fx');
+setTimeout(function(){if(!d.hasAttribute('data-fx-ready'))d.classList.remove('fx')},4000);
+}catch(e){}})();`;
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={fontVariables}>
+    <html lang="en-IN" className={fontVariables} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: bootFx }} />
+      </head>
       <body className="antialiased">
-        <noscript>
-          <style>{`[data-hero-frame],[data-hero-scroll]{opacity:1 !important}
-[data-intro-sheet]{display:none !important}`}</style>
-        </noscript>
-        <ImageManifestProvider>
-          <a
-            href="#main"
-            className="meta sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:border focus:border-ink focus:bg-bone focus:px-4 focus:py-3"
-          >
-            Skip to content
-          </a>
+        <a
+          href="#main"
+          className="label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:border-2 focus:border-ink focus:bg-orange focus:px-4 focus:py-3"
+        >
+          Skip to content
+        </a>
 
-          <SmoothScroll />
-          <ScrollProgress />
-          <Cursor />
-          <Navbar />
+        <ScrollFX />
+        <Navbar />
 
-          <main id="main">{children}</main>
+        <main id="main">{children}</main>
 
-          <Footer />
-          <MobileActionBar />
-        </ImageManifestProvider>
+        <Footer />
       </body>
     </html>
   );

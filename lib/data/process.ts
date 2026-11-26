@@ -1,4 +1,4 @@
-import type { PlateVariant } from "@/components/ui/TechnicalPlate";
+import type { PlateVariant } from "@/components/ui/Illustration";
 
 /**
  * PROCESS

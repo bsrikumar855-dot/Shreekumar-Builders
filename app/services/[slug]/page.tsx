@@ -3,10 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import SmartImage from "@/components/ui/SmartImage";
-import Reveal from "@/components/animations/Reveal";
-import RevealText from "@/components/animations/RevealText";
+import CtaBand from "@/components/sections/CtaBand";
+import { Cta } from "@/components/ui/Bits";
 import { services, getService, serviceSlugs } from "@/lib/data/services";
-import { buttonGhost } from "@/components/animations/MagneticButton";
 
 export function generateStaticParams() {
   return serviceSlugs.map((slug) => ({ slug }));
@@ -44,101 +43,93 @@ export default async function ServiceDetailPage({
       <PageHeader
         index={service.index}
         label={service.title}
+        crumbs={[{ label: "Services", href: "/services" }, { label: service.title }]}
         lines={[service.title]}
         lead={service.summary}
-        meta={[
-          { k: "Trade", v: `${service.index} / 06` },
-          { k: "Sheet", v: `SB-${service.index}` },
-        ]}
+        meta={[{ k: "Trade", v: `${service.index} / 06` }]}
       />
 
-      <div className="grain border-t border-ink-12">
+      <section className="bg-sand py-[var(--spacing-section)]">
         <div className="shell">
-          {/* Drawing */}
-          <Reveal y={26} className="pt-14 lg:pt-20">
-            <SmartImage
-              src={service.image}
-              alt={`${service.title} — Shreekumar Builders`}
-              plate={service.plate}
-              className="aspect-[16/9] w-full"
-              caption={`Drawing — ${service.title.toLowerCase()}`}
-              reveal
-              sizes="100vw"
-            />
-          </Reveal>
+          <div data-parallax-scope data-reveal="scale">
+            <div className="card overflow-hidden">
+              <SmartImage
+                src={service.image}
+                alt={`${service.title} — Shreekumar Builders`}
+                plate={service.plate}
+                parallax={-0.14}
+                priority
+                sizes="100vw"
+                className="aspect-[16/9] w-full"
+              />
+            </div>
+          </div>
 
-          {/* Body + scope */}
-          <div className="grid grid-cols-12 gap-x-5 gap-y-12 py-[var(--spacing-section)] lg:gap-x-8">
-            <div className="col-span-12 lg:col-span-6">
-              <h2 className="meta text-ink-35">Approach</h2>
-              <div className="mt-6 space-y-5">
+          <div className="mt-20 grid grid-cols-12 gap-x-8 gap-y-14 lg:mt-28">
+            <div className="col-span-12 lg:col-span-7">
+              <h2 className="label">Approach</h2>
+              <div className="mt-8 space-y-6">
                 {service.body.map((para, i) => (
-                  <Reveal y={20} key={i}>
-                    <p className="lead max-w-[54ch] text-ink-70">{para}</p>
-                  </Reveal>
+                  <p
+                    key={i}
+                    data-reveal
+                    className={i === 0 ? "lead" : "text-[1.05rem] leading-[1.75] text-ink-70"}
+                  >
+                    {para}
+                  </p>
                 ))}
               </div>
             </div>
 
-            <aside className="col-span-12 lg:col-span-4 lg:col-start-9">
-              <h2 className="meta text-ink-35">Scope of work</h2>
-              <ul className="mt-6 border-t border-ink-12">
-                {service.scope.map((item, i) => (
-                  <li key={item}>
-                    <Reveal y={16} delay={i * 0.03}>
-                      <div className="flex items-baseline gap-4 border-b border-ink-12 py-3.5">
-                        <span className="meta-sm w-6 shrink-0 text-ink-25">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="body-copy text-ink-70">{item}</span>
-                      </div>
-                    </Reveal>
-                  </li>
-                ))}
-              </ul>
-
-              <Reveal y={18} className="mt-8">
-                <p className="meta-sm text-ink-35">
+            <aside className="col-span-12 lg:col-span-5">
+              <div className="card bg-paper p-6 lg:sticky lg:top-28 lg:p-8" data-reveal="right">
+                <h2 className="label">Scope of work</h2>
+                <ul className="mt-5">
+                  {service.scope.map((item, i) => (
+                    <li key={item} className="flex items-baseline gap-4 border-t-2 border-ink py-3.5">
+                      <span className="font-display w-7 shrink-0 text-xl leading-none text-orange">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="label mt-6 text-ink-70">
                   Exact deliverables are agreed per project during scoping.
                 </p>
-              </Reveal>
+                <div className="mt-6">
+                  <Cta href="/contact">Start a project</Cta>
+                </div>
+              </div>
             </aside>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Next trade */}
-      <section
-        data-surface="light"
-        className="grain border-t border-ink-12 bg-limestone py-16 lg:py-24"
-      >
+      <section className="on-dark bg-ink py-16 text-cream lg:py-24">
         <div className="shell">
-          <p className="meta text-ink-35">Next trade</p>
+          <p className="label text-orange">Next trade</p>
           <Link
             href={`/services/${next.slug}`}
-            data-cursor="Open"
             className="group mt-5 flex flex-wrap items-end justify-between gap-6"
           >
-            <RevealText
-              as="span"
-              text={next.title}
-              className="display-2 text-ink transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3"
-            />
-            <span className="meta text-ink-45">
-              {next.index} / 06 <span className="arrow-shift">→</span>
+            <span className="display-2 transition-transform duration-700 ease-[var(--ease-out)] group-hover:translate-x-3 group-hover:text-orange">
+              {next.title}
+            </span>
+            <span className="label text-cream-70">
+              {next.index} / 06 <span className="arr inline-block">→</span>
             </span>
           </Link>
-
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/services" className={buttonGhost}>
+          <div className="mt-10">
+            <Link href="/services" className="btn btn-paper">
               All services
-            </Link>
-            <Link href="/contact" className={buttonGhost} data-cursor="Talk">
-              Start a project <span className="arrow-shift">→</span>
             </Link>
           </div>
         </div>
       </section>
+
+      <CtaBand />
     </>
   );
 }
