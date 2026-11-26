@@ -62,7 +62,7 @@ export const site = {
       label: "WhatsApp",
     } satisfies ContactEntry,
     email: {
-      value: null,
+      value: "babusri996@gmail.com",
       placeholder: "[EMAIL ADDRESS]",
       label: "Email",
     } satisfies ContactEntry,
